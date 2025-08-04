@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AddNewContactVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource  {
+class AddNewContactVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate  {
     @IBOutlet var titleTxtFld: UITextField?
     @IBOutlet var firstTxtFld: UITextField?
     @IBOutlet var lastTxtFld: UITextField?
@@ -202,5 +202,20 @@ class AddNewContactVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataS
     
     @IBAction func submitAction() {
         saveNewContact()
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == phoneFld {
+            // Combine the current text with the new input
+            let currentText = textField.text ?? ""
+            guard let stringRange = Range(range, in: currentText) else {
+                return false
+            }
+            let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+            
+            // Allow only up to 10 digits
+            return updatedText.count <= 10
+        }
+        return true
     }
 }

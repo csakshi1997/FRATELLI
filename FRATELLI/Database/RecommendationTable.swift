@@ -57,17 +57,16 @@ class RecommendationsTable: Database {
             if sqlite3_step(statement) != SQLITE_DONE {
                 let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
                 print("Error inserting recommendation: \(errorMsg)")
-                completion(false, errorMsg) // Call completion with failure
+                completion(false, errorMsg)
             } else {
                 print("Recommendation inserted successfully")
-                completion(true, nil) // Call completion with success
+                completion(true, nil)
             }
         } else {
             let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
             print("Error preparing statement: \(errorMsg)")
-            completion(false, errorMsg) // Call completion with failure
+            completion(false, errorMsg)
         }
-        
         sqlite3_finalize(statement)
     }
     
@@ -80,10 +79,9 @@ class RecommendationsTable: Database {
             FROM RecommendationsTable
         """
         var statement: OpaquePointer?
-
+        
         if sqlite3_prepare_v2(Database.databaseConnection, query, -1, &statement, nil) == SQLITE_OK {
             while sqlite3_step(statement) == SQLITE_ROW {
-                // Fetching data from the table columns
                 let id = String(cString: sqlite3_column_text(statement, 0))
                 let name = String(cString: sqlite3_column_text(statement, 1))
                 let ownerId = String(cString: sqlite3_column_text(statement, 2))
@@ -93,8 +91,7 @@ class RecommendationsTable: Database {
                 let productImageLink = String(cString: sqlite3_column_text(statement, 6))
                 let attributesType = String(cString: sqlite3_column_text(statement, 7))
                 let attributesUrl = String(cString: sqlite3_column_text(statement, 8))
-
-                // Creating related models
+                
                 let productAttributes = ProductName.Attributes(type: attributesType, url: attributesUrl)
                 let product = ProductName(
                     id: productNameId,
@@ -104,8 +101,7 @@ class RecommendationsTable: Database {
                     attributes: productAttributes
                 )
                 let recommendationAttributes = Recommendation.Attributes(type: attributesType, url: attributesUrl)
-
-                // Creating the Recommendation object
+                
                 let recommendation = Recommendation(
                     id: id,
                     name: name,
@@ -120,10 +116,9 @@ class RecommendationsTable: Database {
         } else {
             print("Error fetching recommendations: \(String(cString: sqlite3_errmsg(Database.databaseConnection)))")
         }
-
+        
         sqlite3_finalize(statement)
         return recommendations
     }
-
 }
 

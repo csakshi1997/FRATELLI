@@ -18,6 +18,7 @@ class PreviewOrderVw: UIViewController {
     var salesOrderTable = SalesOrderTable()
     var salesOrderLineItemsTable = SalesOrderLineItemsTable()
     var isSideMenu: Bool = false
+    var accountId = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +41,7 @@ class PreviewOrderVw: UIViewController {
             let storyboard = UIStoryboard(name: "Home", bundle: storyboardBundle)
             let dashboardVC = storyboard.instantiateViewController(withIdentifier: "VisibilityVC") as! VisibilityVC
             self.navigationController?.pushViewController(dashboardVC, animated: true)
+            dashboardVC.accountId = accountId
             SceneDelegate.getSceneDelegate().window?.makeToast(SALESORDER_CREATED)
         }
     }

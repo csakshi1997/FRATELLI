@@ -151,6 +151,12 @@ class Utility {
         Database.deleteTable(tableName: "AssetRequisitionTable")
         Database.deleteTable(tableName: "SkipTable")
         Database.deleteTable(tableName: "DistributorAccountsTable")
+        Defaults.isTrackingStart = false
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            appDelegate.stopLocationTracking()
+            appDelegate.monitor.cancel()
+        }
+        UIApplication.shared.applicationIconBadgeNumber = 0
         if isRedirectedToLogin {
             Defaults.isAuthenticationfailedAtTheTimeOfSync = false
             self.gotoLoginView()

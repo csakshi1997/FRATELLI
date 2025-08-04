@@ -39,14 +39,13 @@ class RiskStockTable: Database {
         ])
     }
 
-    // Save data into RiskStock table
     func saveRiskStock(riskStock: RiskStock, completion: @escaping (Bool, String?) -> Void) {
         var statement: OpaquePointer?
         let insertQuery = """
         INSERT INTO Risk_Stock__c (externalId, DateTime, outletId, ownerId, isInitiateCustomerPromotion, remarks, attributesType, attributesUrl, isSync, createdAt, Visit_Date_c, Visit_Order_c)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
         """
-
+        
         if sqlite3_prepare_v2(Database.databaseConnection, insertQuery, -1, &statement, nil) == SQLITE_OK {
             sqlite3_bind_text(statement, 1, riskStock.externalid ?? "", -1, SQLITE_TRANSIENT)
             sqlite3_bind_text(statement, 2, riskStock.DateTime ?? "", -1, SQLITE_TRANSIENT)
@@ -73,7 +72,6 @@ class RiskStockTable: Database {
             print("Failed to prepare insert statement: \(errorMsg)")
             completion(false, errorMsg)
         }
-
         sqlite3_finalize(statement)
     }
     
@@ -100,7 +98,7 @@ class RiskStockTable: Database {
                 riskStock.createdAt = String(cString: sqlite3_column_text(statement, 10))
                 riskStock.Visit_Date_c = String(cString: sqlite3_column_text(statement, 11))
                 riskStock.Visit_Order_c = String(cString: sqlite3_column_text(statement, 12))
-
+                
                 resultArray.append(riskStock)
             }
             sqlite3_finalize(statement)
@@ -126,7 +124,7 @@ class RiskStockTable: Database {
                 riskStock.remarks = String(cString: sqlite3_column_text(statement, 6))
                 riskStock.isSync = String(cString: sqlite3_column_text(statement, 7))
                 riskStock.createdAt = String(cString: sqlite3_column_text(statement, 8))
-
+                
                 let attributesType = String(cString: sqlite3_column_text(statement, 9))
                 let attributesUrl = String(cString: sqlite3_column_text(statement, 10))
                 riskStock.attributes = RiskStock.Attributes(type: attributesType, url: attributesUrl)

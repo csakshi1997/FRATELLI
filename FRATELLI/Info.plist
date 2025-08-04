@@ -53,5 +53,9 @@
 	</dict>
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
+    <key>BGTaskSchedulerPermittedIdentifiers</key>
+    <array>
+        <string>com.fratelli.syncLocations</string>
+    </array>
 </dict>
 </plist>

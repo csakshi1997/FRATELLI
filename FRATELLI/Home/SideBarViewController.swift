@@ -121,6 +121,14 @@ class SideBarViewController: UIViewController {
         checkInternetConnection(storyBoardName: dashboardVC)
     }
     
+    @IBAction func otherActivityAction() {
+        self.dismiss(animated: false, completion: nil)
+        let storyboardBundle = Bundle.main
+        let storyboard = UIStoryboard(name: "Home", bundle: storyboardBundle)
+        let otherActivityVC = storyboard.instantiateViewController(withIdentifier: "OtherActivityVC") as! OtherActivityVC
+        checkInternetConnection(storyBoardName: otherActivityVC)
+    }
+    
     @IBAction func logoutAction() {
         let isItTrueOrNot = checkDataSyncedorNot()
         if (Defaults.isIncompleteVisitName ?? false) {

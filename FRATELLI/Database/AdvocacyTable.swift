@@ -37,7 +37,7 @@ class AdvocacyTable: Database {
     func saveAdvocacyDate(advocacyRequest: AdvocacyRequest, completion: @escaping (Bool, String?) -> Void) {
         var statement: OpaquePointer?
         let insertQuery = "INSERT INTO AdvocacyTable (ExternalId, outerName, outerId, advocacyDate, productName, productId, pax, ownerId, isSync, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-
+        
         if sqlite3_prepare_v2(Database.databaseConnection, insertQuery, -1, &statement, nil) == SQLITE_OK {
             sqlite3_bind_text(statement, 1, advocacyRequest.ExternalId, -1, SQLITE_TRANSIENT)
             sqlite3_bind_text(statement, 2, advocacyRequest.outerName, -1, SQLITE_TRANSIENT)
@@ -49,7 +49,7 @@ class AdvocacyTable: Database {
             sqlite3_bind_text(statement, 8, advocacyRequest.OwnerId ?? "", -1, SQLITE_TRANSIENT)
             sqlite3_bind_text(statement, 9, advocacyRequest.isSync ?? "", -1, SQLITE_TRANSIENT)
             sqlite3_bind_text(statement, 10, advocacyRequest.createdAt ?? "", -1, SQLITE_TRANSIENT)
-
+            
             if sqlite3_step(statement) != SQLITE_DONE {
                 let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
                 print("Error inserting contact: \(errorMsg)")
@@ -63,16 +63,14 @@ class AdvocacyTable: Database {
             print("Error preparing statement: \(errorMsg)")
             completion(false, errorMsg)
         }
-
         sqlite3_finalize(statement)
     }
     
     func getAdvocacyRequests(completion: @escaping ([AdvocacyRequest]?, String?) -> Void) {
         var statement: OpaquePointer?
         let query = "SELECT * FROM AdvocacyTable"
-
+        
         var advocacyRequests: [AdvocacyRequest] = []
-
         if sqlite3_prepare_v2(Database.databaseConnection, query, -1, &statement, nil) == SQLITE_OK {
             while sqlite3_step(statement) == SQLITE_ROW {
                 let localId = Int(sqlite3_column_int(statement, 0))
@@ -86,7 +84,7 @@ class AdvocacyTable: Database {
                 let ownerId = String(cString: sqlite3_column_text(statement, 8))
                 let isSync = String(cString: sqlite3_column_text(statement, 9))
                 let createdAt = String(cString: sqlite3_column_text(statement, 10))
-
+                
                 let advocacyRequest = AdvocacyRequest(
                     localId: localId,
                     ExternalId: externalId,
@@ -100,7 +98,6 @@ class AdvocacyTable: Database {
                     isSync: isSync.isEmpty ? "" : isSync,
                     createdAt: createdAt.isEmpty ? "" : createdAt
                 )
-
                 advocacyRequests.append(advocacyRequest)
             }
             completion(advocacyRequests, nil)
@@ -109,7 +106,6 @@ class AdvocacyTable: Database {
             print("Error preparing statement: \(errorMsg)")
             completion(nil, errorMsg)
         }
-
         sqlite3_finalize(statement)
     }
     
@@ -166,7 +162,6 @@ class AdvocacyTable: Database {
         
         sqlite3_finalize(statement)
     }
-
 
 }
 

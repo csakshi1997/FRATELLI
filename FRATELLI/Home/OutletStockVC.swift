@@ -48,7 +48,7 @@ class OutletStockVC: UIViewController, UITextFieldDelegate {
     }
 
     func loadProductNames() {
-        productNamesToIDs = Dictionary(uniqueKeysWithValues: product.map { ($0.name, $0.id) })
+        productNamesToIDs = Dictionary(uniqueKeysWithValues: product.map { ($0.name ?? EMPTY, $0.id ?? EMPTY) })
     }
 
     func setInitialUI() {

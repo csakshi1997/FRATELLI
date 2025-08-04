@@ -60,6 +60,8 @@ struct Outlet {
     var isSync: String? 
     let checkIn: Int?
     let createdAt: String?
+    let Asset_Visibility__c: String?
+    let Current_Market_Share__c: String?
 
     struct Attributes {
         let type: String?

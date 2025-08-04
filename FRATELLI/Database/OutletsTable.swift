@@ -67,7 +67,10 @@ class OutletsTable: Database {
                 attributesType TEXT,
                 attributesUrl TEXT,
                 isSync TEXT,
-                createdAt TEXT
+                createdAt TEXT,
+                Asset_Visibility__c TEXT,
+                Current_Market_Share__c TEXT
+        
             );
         """
         if sqlite3_exec(Database.databaseConnection, createTableQuery, nil, nil, nil) != SQLITE_OK {
@@ -75,10 +78,9 @@ class OutletsTable: Database {
         }
     }
     
-    // Insert data into OutletsTable
     func saveOutlet(outlet: Outlet, completion: @escaping (Bool, String?) -> Void) {
         var statement: OpaquePointer?
-        let insertQuery = "INSERT INTO OutletsTable (accountId, accountStatus, annualTargetData, area, billingCity, billingCountry, billingCountryCode, billingState, billingStateCode, billingStreet, channel, checkedInLocationLatitude, checkedInLocationLongitude, classification, distributorCode, distributorName, distributorPartyCode, email, gstNo, groupName, growth, outletId, industry, lastVisitDate, licenseCode, license, marketShare, name, outletType, ownerId, ownerManager, panNo, partyCodeOld, partyCode, phone, salesType, salesmanCode, status, subChannelType, subChannel,supplierGroup, supplierManufacturerUnit, type,yearLastYear, years, zone, parentId, attributesType, attributesUrl, isSync, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        let insertQuery = "INSERT INTO OutletsTable (accountId, accountStatus, annualTargetData, area, billingCity, billingCountry, billingCountryCode, billingState, billingStateCode, billingStreet, channel, checkedInLocationLatitude, checkedInLocationLongitude, classification, distributorCode, distributorName, distributorPartyCode, email, gstNo, groupName, growth, outletId, industry, lastVisitDate, licenseCode, license, marketShare, name, outletType, ownerId, ownerManager, panNo, partyCodeOld, partyCode, phone, salesType, salesmanCode, status, subChannelType, subChannel,supplierGroup, supplierManufacturerUnit, type,yearLastYear, years, zone, parentId, attributesType, attributesUrl, isSync, createdAt, Asset_Visibility__c, Current_Market_Share__c) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         
         if sqlite3_prepare_v2(Database.databaseConnection, insertQuery, -1, &statement, nil) == SQLITE_OK {
             sqlite3_bind_text(statement, 1, outlet.accountId, -1, SQLITE_TRANSIENT)
@@ -133,6 +135,8 @@ class OutletsTable: Database {
             sqlite3_bind_text(statement, 49, outlet.attributes?.url ?? "", -1, SQLITE_TRANSIENT)
             sqlite3_bind_text(statement, 50, outlet.isSync ?? "", -1, SQLITE_TRANSIENT)
             sqlite3_bind_text(statement, 51, outlet.createdAt ?? "", -1, SQLITE_TRANSIENT)
+            sqlite3_bind_text(statement, 52, outlet.Asset_Visibility__c ?? "", -1, SQLITE_TRANSIENT)
+            sqlite3_bind_text(statement, 53, outlet.Current_Market_Share__c ?? "", -1, SQLITE_TRANSIENT)
             
             if sqlite3_step(statement) != SQLITE_DONE {
                 let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
@@ -140,12 +144,12 @@ class OutletsTable: Database {
                 completion(false, errorMsg) 
             } else {
                 print("Outlet inserted successfully")
-                completion(true, nil) // Call completion with success
+                completion(true, nil)
             }
         } else {
             let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
             print("Error preparing statement: \(errorMsg)")
-            completion(false, errorMsg) // Call completion with failure
+            completion(false, errorMsg)
         }
         
         sqlite3_finalize(statement)
@@ -213,6 +217,8 @@ class OutletsTable: Database {
                 )
                 let isSync = String(cString: sqlite3_column_text(statement, 50))
                 let createdAt = String(cString: sqlite3_column_text(statement, 51))
+                let assetVisibility = String(cString: sqlite3_column_text(statement, 52))
+                let currentMarketShare = String(cString: sqlite3_column_text(statement, 53))
                 let outlet = Outlet(
                     localId: localId,
                     accountId: accountId,
@@ -265,7 +271,9 @@ class OutletsTable: Database {
                     attributes: attributes,
                     isSync: isSync,
                     checkIn: 0,
-                    createdAt: createdAt
+                    createdAt: createdAt,
+                    Asset_Visibility__c: assetVisibility,
+                    Current_Market_Share__c: currentMarketShare
                 )
                 
                 resultArray.append(outlet)
@@ -282,14 +290,11 @@ class OutletsTable: Database {
         var resultOutlet: Outlet? = nil
         var statement: OpaquePointer?
         
-        // Modify the query to filter by visitName instead of accountId or any other field
         let query = "SELECT * FROM OutletsTable WHERE visitName = ?"
         
         if sqlite3_prepare_v2(Database.databaseConnection, query, -1, &statement, nil) == SQLITE_OK {
-            // Bind the visitName parameter to the query
             sqlite3_bind_text(statement, 1, visitName, -1, SQLITE_TRANSIENT)
             
-            // Step through the result rows and fetch the data for the matching outlet
             if sqlite3_step(statement) == SQLITE_ROW {
                 let localId = Int(sqlite3_column_int(statement, 0))
                 let accountId = String(cString: sqlite3_column_text(statement, 1))
@@ -346,6 +351,8 @@ class OutletsTable: Database {
                 )
                 let isSync = String(cString: sqlite3_column_text(statement, 50))
                 let createdAt = String(cString: sqlite3_column_text(statement, 51))
+                let assetVisibility = String(cString: sqlite3_column_text(statement, 52))
+                let currentMarketShare = String(cString: sqlite3_column_text(statement, 53))
                 let outlet = Outlet(
                     localId: localId,
                     accountId: accountId,
@@ -398,18 +405,16 @@ class OutletsTable: Database {
                     attributes: attributes,
                     isSync: isSync,
                     checkIn: 0,
-                    createdAt: createdAt
-                    
+                    createdAt: createdAt,
+                    Asset_Visibility__c: assetVisibility,
+                    Current_Market_Share__c: currentMarketShare
                 )
-                
                 resultOutlet = outlet
             }
-            
             sqlite3_finalize(statement)
         } else {
             print("Failed to prepare statement for fetching outlet by visitName.")
         }
-        
         return resultOutlet
     }
     
@@ -417,7 +422,6 @@ class OutletsTable: Database {
         var resultOutlet: Outlet? = nil
         var statement: OpaquePointer?
         
-        // Prepare the query based on which parameter is provided (accountId or visitName)
         var query = "SELECT * FROM OutletsTable WHERE"
         if let accountId = accountId {
             query += " accountId = ?"
@@ -430,14 +434,12 @@ class OutletsTable: Database {
         
         if sqlite3_prepare_v2(Database.databaseConnection, query, -1, &statement, nil) == SQLITE_OK {
             
-            // Bind the parameter based on whether accountId or visitName is passed
             if let accountId = accountId {
                 sqlite3_bind_text(statement, 1, accountId, -1, SQLITE_TRANSIENT)
             } else if let visitName = visitName {
                 sqlite3_bind_text(statement, 1, visitName, -1, SQLITE_TRANSIENT)
             }
             
-            // Step through the result rows and fetch the data for the matching outlet
             if sqlite3_step(statement) == SQLITE_ROW {
                 let localId = Int(sqlite3_column_int(statement, 0))
                 let accountId = String(cString: sqlite3_column_text(statement, 1))
@@ -494,7 +496,8 @@ class OutletsTable: Database {
                 )
                 let isSync = String(cString: sqlite3_column_text(statement, 50))
                 let createdAt = String(cString: sqlite3_column_text(statement, 51))
-                // Create an Outlet object with the fetched data
+                let assetVisibility = String(cString: sqlite3_column_text(statement, 52))
+                let currentMarketShare = String(cString: sqlite3_column_text(statement, 53))
                 let outlet = Outlet(
                     localId: localId,
                     accountId: accountId,
@@ -547,9 +550,10 @@ class OutletsTable: Database {
                     attributes: attributes,
                     isSync: isSync,
                     checkIn: 0,
-                    createdAt: createdAt
+                    createdAt: createdAt,
+                    Asset_Visibility__c: assetVisibility,
+                    Current_Market_Share__c: currentMarketShare
                 )
-                
                 resultOutlet = outlet
             }
             
@@ -557,7 +561,6 @@ class OutletsTable: Database {
         } else {
             print("Failed to prepare statement for fetching outlet by accountId or visitName.")
         }
-        
         return resultOutlet
     }
     
@@ -696,7 +699,6 @@ class OutletsTable: Database {
         
         if sqlite3_prepare_v2(Database.databaseConnection, query, -1, &statement, nil) == SQLITE_OK {
             while sqlite3_step(statement) == SQLITE_ROW {
-                // Helper to handle nulls
                 func getStringValue(index: Int32) -> String {
                     return sqlite3_column_text(statement, index).flatMap { String(cString: $0) } ?? ""
                 }
@@ -759,6 +761,8 @@ class OutletsTable: Database {
                 let isSync = getStringValue(index: 50)
                 let checkIn = getIntValue(index: 62)
                 let createdAt = getStringValue(index: 63)
+                let assetVisibility = getStringValue(index: 64)
+                let currentmarketShare = getStringValue(index: 65)
                 
                 let outlet = Outlet(
                     localId: localId,
@@ -812,7 +816,9 @@ class OutletsTable: Database {
                     attributes: attributes,
                     isSync: isSync,
                     checkIn: checkIn,
-                    createdAt: createdAt
+                    createdAt: createdAt,
+                    Asset_Visibility__c: assetVisibility,
+                    Current_Market_Share__c: currentmarketShare
                 )
                 resultArray.append(outlet)
             }
@@ -899,6 +905,8 @@ class OutletsTable: Database {
                 )
                 let isSync = String(cString: sqlite3_column_text(statement, 50))
                 let createdAt = String(cString: sqlite3_column_text(statement, 51))
+                let assetVisibility = String(cString: sqlite3_column_text(statement, 52))
+                let currentMarketShare = String(cString: sqlite3_column_text(statement, 53))
                 
                 let outlet = Outlet(
                     localId: localId,
@@ -952,7 +960,9 @@ class OutletsTable: Database {
                     attributes: attributes,
                     isSync: isSync,
                     checkIn: 0,
-                    createdAt: createdAt
+                    createdAt: createdAt,
+                    Asset_Visibility__c: assetVisibility,
+                    Current_Market_Share__c: currentMarketShare
                 )
                 
                 resultArray.append(outlet)
@@ -1028,6 +1038,8 @@ class OutletsTable: Database {
                 )
                 let isSync = String(cString: sqlite3_column_text(statement, 50))
                 let createdAt = String(cString: sqlite3_column_text(statement, 51))
+                let assetVisibility = String(cString: sqlite3_column_text(statement, 52))
+                let currentMarketShare = String(cString: sqlite3_column_text(statement, 53))
                 let outlet = Outlet(
                     localId: localId,
                     accountId: accountId,
@@ -1080,7 +1092,9 @@ class OutletsTable: Database {
                     attributes: attributes,
                     isSync: isSync,
                     checkIn: 0,
-                    createdAt: createdAt
+                    createdAt: createdAt,
+                    Asset_Visibility__c: assetVisibility,
+                    Current_Market_Share__c: currentMarketShare
                 )
                 
                 resultArray.append(outlet)

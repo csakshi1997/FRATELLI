@@ -56,6 +56,7 @@ class POSMAssetReqVc: UIViewController, CheckboxCallForAssetDelegate, UIImagePic
     var customDateFormatter = CustomDateFormatter()
     var pOSMTable = POSMTable()
     var pOSMLineItemsTable = POSMLineItemsTable()
+    var appVersionOperation = AppVersionOperation()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -236,7 +237,7 @@ class POSMAssetReqVc: UIViewController, CheckboxCallForAssetDelegate, UIImagePic
     
     func sendPOSMLineItems(completion: @escaping () -> Void) {
         guard !posmItems.isEmpty else {
-            completion()   // If nothing to save, call completion
+            completion()
             return
         }
 
@@ -294,58 +295,168 @@ class POSMAssetReqVc: UIViewController, CheckboxCallForAssetDelegate, UIImagePic
         }
     }
     
+    func saveposmRequisationinDB(posm: [POSMItem]) {
+        
+    }
+    
     func uploadAssetsToServer(assets: [AssetItem]) {
-        
-        uploadNextAsset(from: assets, index: 0)
-    }
+        // 1. Check if at least one file is selected
+        if !assetItems.isEmpty {
+            let isAnyFileSelected = assets.contains { $0.image != nil && !$0.image!.isEmpty }
+            guard isAnyFileSelected else {
+                showAlert(title: "No Files Selected", message: "Please select at least one file before proceeding.")
+                return
+            }
+        }
 
-    private func uploadNextAsset(from assets: [AssetItem], index: Int) {
-        guard index < assets.count else {
-            print("✅ All assets uploaded successfully.")
-            let storyboard = UIStoryboard(name: "Home", bundle: nil)
-            if let pOSMAssetReqVc = storyboard.instantiateViewController(withIdentifier: "AddNewTasksVC") as? AddNewTasksVC {
-                self.navigationController?.pushViewController(pOSMAssetReqVc, animated: true)
+        // 2. Validate for mandatory images (e.g., based on asset name keywords like "cooler", "display")
+        let keywordsRequiringImage = ["cooler", "display", "banner", "standee"]
+        let missingImages = assets.filter { session in
+            guard let assetName = session.label else { return false }
+            return keywordsRequiringImage.contains(where: { assetName.localizedCaseInsensitiveContains($0) }) &&
+                   (session.image == nil || session.image?.isEmpty == true)
+        }
+
+        if !missingImages.isEmpty {
+            let assetNames = missingImages.compactMap { $0.label }.joined(separator: ",\n")
+            showAlert(title: "Missing Images", message: "Image is mandatory for:\n\(assetNames)")
+            return
+        }
+
+        // 3. Validate for PDF-mandatory assets (e.g., "Menu Listing")
+        let missingPDFAssets = assets.filter { session in
+            guard let assetName = session.label else { return false }
+            return assetName.localizedCaseInsensitiveContains("menu listing") &&
+                   (session.image == nil || session.image?.isEmpty == true)
+        }
+
+        if !missingPDFAssets.isEmpty {
+            let assetNames = missingPDFAssets.compactMap { $0.label }.joined(separator: ",\n")
+            showAlert(title: "Missing PDF", message: "PDF is mandatory for:\n\(assetNames)")
+            return
+        }
+
+        // 4. Begin saving to local database
+        let dispatchGroup = DispatchGroup()
+        var saveFailures: [String] = []
+
+        for session in assets {
+            guard let fileName = session.image, !fileName.isEmpty else { continue }
+
+            let model = AssetRequisitionServerModel(
+                localId: nil,
+                userId: Defaults.userId ?? "",
+                fileType: fileName.lowercased().hasSuffix(".pdf") ? "pdf" : "image",
+                fileName: fileName,
+                isSync: "0",
+                createdAt: getCurrentTimeStamp(),
+                assetName: session.label,
+                externalId: externalID,
+                dealerDistributorCorpId: currentVisitId,
+                deviceName: UIDevice.current.name,
+                deviceVersion: appVersionOperation.getCurrentAppVersion() ?? "",
+                deviceType: "iOS",
+                visitOrderId: currentSelectedVisitId,
+                imagePublicUrl: ""
+            )
+
+            dispatchGroup.enter()
+            AssetRequisitionServerTable().saveRecord(model) { success, error in
+                if success {
+                    print("✅ Saved: \(fileName)")
+                } else {
+                    print("❌ Failed to save \(fileName). Error: \(error ?? "-")")
+                    saveFailures.append(fileName)
+                }
+                dispatchGroup.leave()
             }
-            return
         }
-        
-        let asset = assets[index]
-        
-        guard let imageName = asset.image,
-              let image = loadImageFromDocuments(imageName: imageName) else {
-            print("⚠️ Error: Could not find image for asset \(asset.label ?? "Unknown")")
-            uploadNextAsset(from: assets, index: index + 1) // Move to next asset
-            return
-        }
-        
-        guard let base64String = convertImageToBase64(image: image) else {
-            print("⚠️ Error: Could not convert image \(asset.label ?? "") to Base64")
-            uploadNextAsset(from: assets, index: index + 1) // Move to next asset
-            return
-        }
-        
-        guard let hexString = convertBase64ToHex(base64String: base64String) else {
-            print("⚠️ Error: Could not convert Base64 to Hex for \(asset.label ?? "")")
-            uploadNextAsset(from: assets, index: index + 1) // Move to next asset
-            return
-        }
-        
-        let params: [String: Any] = [
-            "Title": "Asset-\(asset.label ?? "")-000\(index)",
-            "AccountId": currentVisitId,
-            "PathOnClient": asset.image ?? "",
-            "FileDataHex": hexString
-        ]
-        print(params)
-        qCROperation.executeUploadImage(localId: 0, param: params) { error, response, statusCode in
-            if let error = error {
-                print("❌ Error uploading \(asset.label ?? ""): \(error)")
+
+        // 5. On complete
+        dispatchGroup.notify(queue: .main) {
+            if saveFailures.isEmpty {
+                self.view.makeToast("All files saved locally. Uploading...", duration: 1.5, position: .top)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
+                    let storyboard = UIStoryboard(name: "Home", bundle: nil)
+                    if let vc = storyboard.instantiateViewController(withIdentifier: "AddNewTasksVC") as? AddNewTasksVC {
+                        self.navigationController?.pushViewController(vc, animated: true)
+                    }
+                }
             } else {
-                print("✅ Uploaded \(asset.label ?? "") successfully: \(response ?? [:])")
+                let failed = saveFailures.joined(separator: ", ")
+                self.showAlert(title: "Save Failed", message: "Failed to save files:\n\(failed)")
             }
-            self.uploadNextAsset(from: assets, index: index + 1)
         }
     }
+    
+//    func showAlert(title: String, message: String) {
+//        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+//        alert.addAction(UIAlertAction(title: "OK", style: .default))
+//        self.present(alert, animated: true)
+//    }
+    
+    func getCurrentTimeStamp() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return formatter.string(from: Date())
+    }
+    
+    
+    
+    
+    
+    
+//    func uploadAssetsToServer(assets: [AssetItem]) {
+//        uploadNextAsset(from: assets, index: 0)
+//    }
+//
+//    private func uploadNextAsset(from assets: [AssetItem], index: Int) {
+//        guard index < assets.count else {
+//            print("✅ All assets uploaded successfully.")
+//            let storyboard = UIStoryboard(name: "Home", bundle: nil)
+//            if let pOSMAssetReqVc = storyboard.instantiateViewController(withIdentifier: "AddNewTasksVC") as? AddNewTasksVC {
+//                self.navigationController?.pushViewController(pOSMAssetReqVc, animated: true)
+//            }
+//            return
+//        }
+//        
+//        let asset = assets[index]
+//        
+//        guard let imageName = asset.image,
+//              let image = loadImageFromDocuments(imageName: imageName) else {
+//            print("⚠️ Error: Could not find image for asset \(asset.label ?? "Unknown")")
+//            uploadNextAsset(from: assets, index: index + 1) // Move to next asset
+//            return
+//        }
+//        
+//        guard let base64String = convertImageToBase64(image: image) else {
+//            print("⚠️ Error: Could not convert image \(asset.label ?? "") to Base64")
+//            uploadNextAsset(from: assets, index: index + 1) // Move to next asset
+//            return
+//        }
+//        
+//        guard let hexString = convertBase64ToHex(base64String: base64String) else {
+//            print("⚠️ Error: Could not convert Base64 to Hex for \(asset.label ?? "")")
+//            uploadNextAsset(from: assets, index: index + 1) // Move to next asset
+//            return
+//        }
+//        
+//        let params: [String: Any] = [
+//            "Title": "Asset-\(asset.label ?? "")-000\(index)",
+//            "AccountId": currentVisitId,
+//            "PathOnClient": asset.image ?? "",
+//            "FileDataHex": hexString
+//        ]
+//        print(params)
+//        qCROperation.executeUploadImage(localId: 0, param: params) { error, response, statusCode in
+//            if let error = error {
+//                print("❌ Error uploading \(asset.label ?? ""): \(error)")
+//            } else {
+//                print("✅ Uploaded \(asset.label ?? "") successfully: \(response ?? [:])")
+//            }
+//            self.uploadNextAsset(from: assets, index: index + 1)
+//        }
+//    }
     
     private func loadImageFromDocuments(imageName: String) -> UIImage? {
         let fileURL = getDocumentsDirectory().appendingPathComponent(imageName)

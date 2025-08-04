@@ -10,13 +10,11 @@ import UIKit
 class POSMVC: UIViewController {
     @IBOutlet var TableVw: UITableView?
     @IBOutlet var noDataVw: UIView?
-    var contactsTable = ContactsTable()
-    var contact = [Contact]()
-    let sampleData = [
-            "Short text.",
-            "A longer paragraph that may span multiple lines. This text demonstrates how the cell height adjusts dynamically based on the amount of content inside the label.",
-            "Another short text."
-        ]
+    var customDateFormatter = CustomDateFormatter()
+    var pOSMTable = POSMTable()
+    var pOSMLineItemsTable = POSMLineItemsTable()
+    var pOSMModel = [POSMModel]()
+    var pOSMLineItemsModel = [POSMLineItemsModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,38 +24,40 @@ class POSMVC: UIViewController {
     func setInitialUI() {
         TableVw?.showsVerticalScrollIndicator = false
         TableVw?.showsHorizontalScrollIndicator = false
-        contact = contactsTable.getContacts()
-        if contact.isEmpty {
+        pOSMModel = pOSMTable.getPOSMs()
+        pOSMLineItemsModel = pOSMLineItemsTable.getPOSMLineItems()
+        if pOSMLineItemsModel.count <= 0 {
             noDataVw?.isHidden = false
         } else {
             noDataVw?.isHidden = true
             TableVw?.reloadData()
         }
-        TableVw?.rowHeight = UITableView.automaticDimension
-        TableVw?.estimatedRowHeight = 100
     }
-    
 }
 
 extension POSMVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sampleData.count
+        return pOSMLineItemsModel.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: POSMCell = tableView.dequeueReusableCell(withIdentifier: "POSMCell", for: indexPath) as! POSMCell
-        cell.configure(with: sampleData[indexPath.row])
-
+        let posmLineItemsDict = pOSMLineItemsModel[indexPath.row]
+        cell.poshitemListLbl?.text = posmLineItemsDict.POSM_Asset_name__c
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        let posmLineItemsDict = pOSMLineItemsModel[indexPath.row]
+        let storyboard = UIStoryboard(name: "POSM", bundle: nil)
+        if let pOSMDetailsVC = storyboard.instantiateViewController(withIdentifier: "POSMDetailsVC") as? POSMDetailsVC {
+            pOSMDetailsVC.pOSMLineItemsModel = posmLineItemsDict
+            self.navigationController?.pushViewController(pOSMDetailsVC, animated: true)
+        }
     }
 }
 
 class POSMCell: UITableViewCell {
-    @IBOutlet var outletLbl: UILabel?
     @IBOutlet var poshitemListLbl: UILabel?
     @IBOutlet var vw: UIView?
     
@@ -70,9 +70,6 @@ class POSMCell: UITableViewCell {
     
     func addButtonBorder() {
         vw?.dropShadow()
-    }
-    func configure(with text: String) {
-        poshitemListLbl?.text = text
     }
 }
 

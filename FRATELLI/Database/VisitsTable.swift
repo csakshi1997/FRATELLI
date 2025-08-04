@@ -148,112 +148,7 @@ class VisitsTable: Database {
         let query = "SELECT * FROM VisitsTable"
         
         if sqlite3_prepare_v2(Database.databaseConnection, query, -1, &statement, nil) == SQLITE_OK {
-                while sqlite3_step(statement) == SQLITE_ROW {
-                    // Extract the account reference
-                    let accountReference = Visit.Account(
-                        classification: String(cString: sqlite3_column_text(statement, 2)),
-                        id: String(cString: sqlite3_column_text(statement, 3)),
-                        name: String(cString: sqlite3_column_text(statement, 4)),
-                        ownerId: String(cString: sqlite3_column_text(statement, 5)),
-                        subChannel: String(cString: sqlite3_column_text(statement, 6))
-                    )
-                    
-                    // Extract the visit attributes
-                    let attributes = Visit.Attributes(
-                        type: String(cString: sqlite3_column_text(statement, 33)),  // attributesType
-                        url: String(cString: sqlite3_column_text(statement, 34))    // attributesUrl
-                    )
-                    
-                    // Create the Visit object
-                    let visit = Visit(
-                        localId: Int(sqlite3_column_int(statement, 0)),
-                        accountId: String(cString: sqlite3_column_text(statement, 1)),
-                        accountReference: accountReference,
-                        actualEnd: String(cString: sqlite3_column_text(statement, 7)),
-                        actualStart: String(cString: sqlite3_column_text(statement, 8)),
-                        area: String(cString: sqlite3_column_text(statement, 9)),
-                        beatRoute: String(cString: sqlite3_column_text(statement, 10)),
-                        channel: String(cString: sqlite3_column_text(statement, 11)),
-                        checkInLocation: String(cString: sqlite3_column_text(statement, 12)),
-                        checkOutLocation: String(cString: sqlite3_column_text(statement, 13)),
-                        checkedInLocationLatitude: String(cString: sqlite3_column_text(statement, 14)),
-                        checkedInLocationLongitude: String(cString: sqlite3_column_text(statement, 15)),
-                        checkedIn: Int(sqlite3_column_int(statement, 16)),
-                        checkedOutGeolocationLatitude: String(cString: sqlite3_column_text(statement, 17)),
-                        checkedOutGeolocationLongitude: String(cString: sqlite3_column_text(statement, 18)),
-                        checkedOut: Int(sqlite3_column_int(statement, 19)),
-                        empZone: String(cString: sqlite3_column_text(statement, 20)),
-                        employeeCode: Int(sqlite3_column_int(statement, 21)),
-                        id: String(cString: sqlite3_column_text(statement, 22)),
-                        name: String(cString: sqlite3_column_text(statement, 23)),
-                        oldPartyCode: String(cString: sqlite3_column_text(statement, 24)),
-                        outletCreation: String(cString: sqlite3_column_text(statement, 25)),
-                        outletType: String(cString: sqlite3_column_text(statement, 26)),
-                        ownerId: String(cString: sqlite3_column_text(statement, 27)),
-                        ownerArea: String(cString: sqlite3_column_text(statement, 28)),
-                        partyCode: String(cString: sqlite3_column_text(statement, 29)),
-                        remarks: String(cString: sqlite3_column_text(statement, 30)),
-                        status: String(cString: sqlite3_column_text(statement, 31)),
-                        visitPlanDate: String(cString: sqlite3_column_text(statement, 32)),
-                        attributes: attributes,
-                        isSync: String(cString: sqlite3_column_text(statement, 35)),
-                        isCompleted: String(cString: sqlite3_column_text(statement, 36)),
-                        createdAt: String(cString: sqlite3_column_text(statement, 37)),
-                        isNew: Int(sqlite3_column_int(statement, 38)),
-                        externalId: String(cString: sqlite3_column_text(statement, 39)),
-                        fromAppCompleted: String(cString: sqlite3_column_text(statement, 40)),
-                        Contact_Person_Name__c: String(cString: sqlite3_column_text(statement, 41)),
-                        Contact_Phone_Number__c : String(cString: sqlite3_column_text(statement, 42))
-                    )
-                    
-                    visits.append(visit) // Add visit to the list
-                }
-                
-                // Finalize statement and return data on main thread
-                sqlite3_finalize(statement)
-                
-                // Call the completion handler on the main thread
-                DispatchQueue.main.async {
-                    // Handle success, update UI, or notify of completion
-                }
-        } else {
-            let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
-            print("Error preparing statement: \(errorMsg)")
-        }
-        return visits
-    }
-    
-    func fetchAllAccountIds() -> [String] {
-        var accountIds = [String]()
-        var statement: OpaquePointer?
-        let query = "SELECT accountId FROM VisitsTable"
-        
-        if sqlite3_prepare_v2(Database.databaseConnection, query, -1, &statement, nil) == SQLITE_OK {
             while sqlite3_step(statement) == SQLITE_ROW {
-                if let accountIdCStr = sqlite3_column_text(statement, 0) {
-                    let accountId = String(cString: accountIdCStr)
-                    accountIds.append(accountId)
-                }
-            }
-            sqlite3_finalize(statement)
-        } else {
-            let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
-            print("Error preparing statement: \(errorMsg)")
-        }
-        
-        return accountIds
-    }
-    
-    func getVisitDataByAccountId(accountId: String) -> Visit? {
-        var resultVisit: Visit? = nil
-        var statement: OpaquePointer?
-
-        let query = "SELECT * FROM VisitsTable WHERE accountId = ?"
-
-        if sqlite3_prepare_v2(Database.databaseConnection, query, -1, &statement, nil) == SQLITE_OK {
-            sqlite3_bind_text(statement, 1, accountId, -1, SQLITE_TRANSIENT)
-
-            if sqlite3_step(statement) == SQLITE_ROW {
                 let accountReference = Visit.Account(
                     classification: String(cString: sqlite3_column_text(statement, 2)),
                     id: String(cString: sqlite3_column_text(statement, 3)),
@@ -262,13 +157,11 @@ class VisitsTable: Database {
                     subChannel: String(cString: sqlite3_column_text(statement, 6))
                 )
                 
-                // Extract the visit attributes
                 let attributes = Visit.Attributes(
                     type: String(cString: sqlite3_column_text(statement, 33)),  // attributesType
                     url: String(cString: sqlite3_column_text(statement, 34))    // attributesUrl
                 )
                 
-                // Create the Visit object
                 let visit = Visit(
                     localId: Int(sqlite3_column_int(statement, 0)),
                     accountId: String(cString: sqlite3_column_text(statement, 1)),
@@ -309,22 +202,112 @@ class VisitsTable: Database {
                     Contact_Person_Name__c: String(cString: sqlite3_column_text(statement, 41)),
                     Contact_Phone_Number__c : String(cString: sqlite3_column_text(statement, 42))
                 )
-
+                visits.append(visit)
+            }
+            sqlite3_finalize(statement)
+            DispatchQueue.main.async {
+            }
+        } else {
+            let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
+            print("Error preparing statement: \(errorMsg)")
+        }
+        return visits
+    }
+    
+    func fetchAllAccountIds() -> [String] {
+        var accountIds = [String]()
+        var statement: OpaquePointer?
+        let query = "SELECT accountId FROM VisitsTable"
+        
+        if sqlite3_prepare_v2(Database.databaseConnection, query, -1, &statement, nil) == SQLITE_OK {
+            while sqlite3_step(statement) == SQLITE_ROW {
+                if let accountIdCStr = sqlite3_column_text(statement, 0) {
+                    let accountId = String(cString: accountIdCStr)
+                    accountIds.append(accountId)
+                }
+            }
+            sqlite3_finalize(statement)
+        } else {
+            let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
+            print("Error preparing statement: \(errorMsg)")
+        }
+        return accountIds
+    }
+    
+    func getVisitDataByAccountId(accountId: String) -> Visit? {
+        var resultVisit: Visit? = nil
+        var statement: OpaquePointer?
+        
+        let query = "SELECT * FROM VisitsTable WHERE accountId = ?"
+        
+        if sqlite3_prepare_v2(Database.databaseConnection, query, -1, &statement, nil) == SQLITE_OK {
+            sqlite3_bind_text(statement, 1, accountId, -1, SQLITE_TRANSIENT)
+            
+            if sqlite3_step(statement) == SQLITE_ROW {
+                let accountReference = Visit.Account(
+                    classification: String(cString: sqlite3_column_text(statement, 2)),
+                    id: String(cString: sqlite3_column_text(statement, 3)),
+                    name: String(cString: sqlite3_column_text(statement, 4)),
+                    ownerId: String(cString: sqlite3_column_text(statement, 5)),
+                    subChannel: String(cString: sqlite3_column_text(statement, 6))
+                )
+                
+                let attributes = Visit.Attributes(
+                    type: String(cString: sqlite3_column_text(statement, 33)),
+                    url: String(cString: sqlite3_column_text(statement, 34))
+                )
+                let visit = Visit(
+                    localId: Int(sqlite3_column_int(statement, 0)),
+                    accountId: String(cString: sqlite3_column_text(statement, 1)),
+                    accountReference: accountReference,
+                    actualEnd: String(cString: sqlite3_column_text(statement, 7)),
+                    actualStart: String(cString: sqlite3_column_text(statement, 8)),
+                    area: String(cString: sqlite3_column_text(statement, 9)),
+                    beatRoute: String(cString: sqlite3_column_text(statement, 10)),
+                    channel: String(cString: sqlite3_column_text(statement, 11)),
+                    checkInLocation: String(cString: sqlite3_column_text(statement, 12)),
+                    checkOutLocation: String(cString: sqlite3_column_text(statement, 13)),
+                    checkedInLocationLatitude: String(cString: sqlite3_column_text(statement, 14)),
+                    checkedInLocationLongitude: String(cString: sqlite3_column_text(statement, 15)),
+                    checkedIn: Int(sqlite3_column_int(statement, 16)),
+                    checkedOutGeolocationLatitude: String(cString: sqlite3_column_text(statement, 17)),
+                    checkedOutGeolocationLongitude: String(cString: sqlite3_column_text(statement, 18)),
+                    checkedOut: Int(sqlite3_column_int(statement, 19)),
+                    empZone: String(cString: sqlite3_column_text(statement, 20)),
+                    employeeCode: Int(sqlite3_column_int(statement, 21)),
+                    id: String(cString: sqlite3_column_text(statement, 22)),
+                    name: String(cString: sqlite3_column_text(statement, 23)),
+                    oldPartyCode: String(cString: sqlite3_column_text(statement, 24)),
+                    outletCreation: String(cString: sqlite3_column_text(statement, 25)),
+                    outletType: String(cString: sqlite3_column_text(statement, 26)),
+                    ownerId: String(cString: sqlite3_column_text(statement, 27)),
+                    ownerArea: String(cString: sqlite3_column_text(statement, 28)),
+                    partyCode: String(cString: sqlite3_column_text(statement, 29)),
+                    remarks: String(cString: sqlite3_column_text(statement, 30)),
+                    status: String(cString: sqlite3_column_text(statement, 31)),
+                    visitPlanDate: String(cString: sqlite3_column_text(statement, 32)),
+                    attributes: attributes,
+                    isSync: String(cString: sqlite3_column_text(statement, 35)),
+                    isCompleted: String(cString: sqlite3_column_text(statement, 36)),
+                    createdAt: String(cString: sqlite3_column_text(statement, 37)),
+                    isNew: Int(sqlite3_column_int(statement, 38)),
+                    externalId: String(cString: sqlite3_column_text(statement, 39)),
+                    fromAppCompleted: String(cString: sqlite3_column_text(statement, 40)),
+                    Contact_Person_Name__c: String(cString: sqlite3_column_text(statement, 41)),
+                    Contact_Phone_Number__c : String(cString: sqlite3_column_text(statement, 42))
+                )
                 resultVisit = visit
             }
             sqlite3_finalize(statement)
         } else {
             print("Failed to prepare statement for fetching visit by accountId.")
         }
-
         return resultVisit
     }
-        
     
     func updateCheckInLocation(actualStart: String, forVisitId: String, isSync: String, createdAt: String, checkInLocation: String, latitude: String, longitude: String, checkedIn: Bool, externalId: String, completion: @escaping (Bool, String?) -> Void) {
         var statement: OpaquePointer?
         
-        // Update query
         let updateQuery = """
             UPDATE VisitsTable 
             SET checkInLocation = ?, actualStart = ?, checkedInLocationLatitude = ?, checkedInLocationLongitude = ?, checkedIn = ?, isSync = ?, externalId = ? 
@@ -363,7 +346,6 @@ class VisitsTable: Database {
     func updateCheckOutLocation(createdAt: String, actualEnd: String, checkedIn: String, forVisitId: String, checkOutLocation: String, latitude: String, longitude: String, chcekedOut: Bool, isCompleted: String, fromAppCompleted: String, completion: @escaping (Bool, String?) -> Void) {
         var statement: OpaquePointer?
         
-        // Update query
         let updateQuery = """
             UPDATE VisitsTable 
             SET checkedIn = ?, actualEnd = ?, checkOutLocation = ?, checkedOutGeolocationLatitude = ?, checkedOutGeolocationLongitude = ?, checkedOut = ?, createdAt = ?, isCompleted = ?, fromAppCompleted = ? 
@@ -404,7 +386,6 @@ class VisitsTable: Database {
     func updateContactDetails(accountId: String, contactPersonName: String, contactPhoneNumber: String, completion: @escaping (Bool, String?) -> Void) {
         var statement: OpaquePointer?
         
-        // Update query
         let updateQuery = """
             UPDATE VisitsTable
             SET Contact_Person_Name__c = ?, Contact_Phone_Number__c = ?
@@ -423,7 +404,6 @@ class VisitsTable: Database {
             completion(false, errorMsg)
             return
         }
-        
         sqlite3_bind_text(statement, 1, contactPersonName, -1, SQLITE_TRANSIENT)
         sqlite3_bind_text(statement, 2, contactPhoneNumber, -1, SQLITE_TRANSIENT)
         sqlite3_bind_text(statement, 3, accountId, -1, SQLITE_TRANSIENT)
@@ -436,7 +416,6 @@ class VisitsTable: Database {
             print("Error executing update statement: \(errorMsg)")
             completion(false, errorMsg)
         }
-        
         sqlite3_finalize(statement)
     }
     
@@ -455,13 +434,10 @@ class VisitsTable: Database {
                     subChannel: String(cString: sqlite3_column_text(statement, 6))
                 )
                 
-                // Extract the visit attributes
                 let attributes = Visit.Attributes(
-                    type: String(cString: sqlite3_column_text(statement, 33)),  // attributesType
-                    url: String(cString: sqlite3_column_text(statement, 34))    // attributesUrl
+                    type: String(cString: sqlite3_column_text(statement, 33)),
+                    url: String(cString: sqlite3_column_text(statement, 34))
                 )
-                
-                // Create the Visit object
                 let visit = Visit(
                     localId: Int(sqlite3_column_int(statement, 0)),
                     accountId: String(cString: sqlite3_column_text(statement, 1)),
@@ -502,7 +478,6 @@ class VisitsTable: Database {
                     Contact_Person_Name__c: String(cString: sqlite3_column_text(statement, 41)),
                     Contact_Phone_Number__c : String(cString: sqlite3_column_text(statement, 42))
                 )
-
                 visits.append(visit)
             }
             sqlite3_finalize(statement)
@@ -527,13 +502,11 @@ class VisitsTable: Database {
                     subChannel: String(cString: sqlite3_column_text(statement, 6))
                 )
                 
-                // Extract the visit attributes
                 let attributes = Visit.Attributes(
-                    type: String(cString: sqlite3_column_text(statement, 33)),  // attributesType
-                    url: String(cString: sqlite3_column_text(statement, 34))    // attributesUrl
+                    type: String(cString: sqlite3_column_text(statement, 33)),
+                    url: String(cString: sqlite3_column_text(statement, 34))
                 )
                 
-                // Create the Visit object
                 let visit = Visit(
                     localId: Int(sqlite3_column_int(statement, 0)),
                     accountId: String(cString: sqlite3_column_text(statement, 1)),
@@ -606,6 +579,4 @@ class VisitsTable: Database {
         }
         sqlite3_finalize(statement)
     }
-
-
 }

@@ -143,5 +143,4 @@ class CallForHelpTable: Database {
         }
         sqlite3_finalize(statement)
     }
-    
 }

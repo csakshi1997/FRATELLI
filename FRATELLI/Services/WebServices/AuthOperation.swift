@@ -63,4 +63,19 @@ class AuthOperation {
             outerClosure(nil, responseData, Utility.getStatus(responseCode: statusCode ?? 0))
         }
     }
+    
+    func getUserDetails(outerClosure: @escaping ((String?, [String: Any]?, ResponseStatus) -> ())) -> () {
+        webRequest.processRequestUsingPostMethod(url: "\(Defaults.id ?? EMPTY)", parameters: nil, showLoader: true, contentType: .json) { error, val, result, statusCode in
+            print("User Details Response: \(result ?? EMPTY)")
+            guard error == nil else {
+                outerClosure(error, result as? [String: Any], Utility.getStatus(responseCode: statusCode ?? 0))
+                return
+            }
+            guard let responseData = (result as? [String: Any]) else {
+                outerClosure(error, nil, Utility.getStatus(responseCode: statusCode ?? 0))
+                return
+            }
+            outerClosure(nil, responseData, Utility.getStatus(responseCode: statusCode ?? 0))
+        }
+    }
 }

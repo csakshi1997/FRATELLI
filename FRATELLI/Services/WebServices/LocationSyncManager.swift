@@ -7,6 +7,7 @@
 
 import Foundation
 import Network
+import UIKit
 
 class LocationSyncManager {
     let webRequest = BaseWebService()
@@ -15,7 +16,6 @@ class LocationSyncManager {
     let customDateFormatter = CustomDateFormatter()
     let monitor = NWPathMonitor()
     let queue = DispatchQueue.global(qos: .background)
-    
     
     init() {
         monitor.pathUpdateHandler = { path in
@@ -82,13 +82,12 @@ class LocationSyncManager {
         
         print("📡 Sending location payload: \(payload)")
         
-        webRequest.processRequestUsingPostMethod(url: "https://location.fieldblaze.com/user/tracking/create", parameters: payload, showLoader: true, contentType: .json) { error, val, result, statusCode in
+        webRequest.processRequestUsingPostMethod(url: "https://location.fieldblaze.com/user/tracking/create", parameters: payload, showLoader: false, contentType: .json) { error, val, result, statusCode in
             if let error = error {
                 print("❌ Error sending location: \(error)")
                 completion(false)
                 return
             }
-            
             print("📡 Response from server: \(result ?? "No Response")")
             completion(true)
         }

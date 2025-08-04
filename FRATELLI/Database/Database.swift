@@ -90,6 +90,12 @@ class Database: NSObject {
         distributorAccountsTable.createOutletsTable()
         let locationTable = LocationTable()
         locationTable.createLocationTable()
+        let otherActivityTable = OtherActivityTable()
+        otherActivityTable.createOtherActivityTable()
+        let visibilityServerTable = VisibilityServerTable()
+        visibilityServerTable.createVisibilityServerTable()
+        let assetRequisitionServerTable = AssetRequisitionServerTable()
+        assetRequisitionServerTable.createVisibilityServerTable()
     }
     
     class func openDatabase() {

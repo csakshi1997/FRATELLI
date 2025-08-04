@@ -39,7 +39,6 @@ class POSMTable: Database {
             INSERT INTO POSMTable (ExternalId, outerName, outerId, Visit__c, OwnerId, isSync, createdAt, Visit_Date_c, Visit_Order_c)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """
-        
         if sqlite3_prepare_v2(Database.databaseConnection, insertQuery, -1, &statement, nil) == SQLITE_OK {
             sqlite3_bind_text(statement, 1, posm.ExternalId ?? "", -1, SQLITE_TRANSIENT)
             sqlite3_bind_text(statement, 2, posm.outerName ?? "", -1, SQLITE_TRANSIENT)
@@ -64,7 +63,6 @@ class POSMTable: Database {
             print("Error preparing statement: \(errorMsg)")
             completion(false, errorMsg)
         }
-        
         sqlite3_finalize(statement)
     }
     
@@ -91,7 +89,6 @@ class POSMTable: Database {
         } else {
             print("Failed to prepare statement for fetching POSMs.")
         }
-        
         sqlite3_finalize(statement)
         return resultArray
     }
@@ -113,13 +110,11 @@ class POSMTable: Database {
                 posm.createdAt = String(cString: sqlite3_column_text(statement, 7))
                 posm.Visit_Date_c = String(cString: sqlite3_column_text(statement, 8))
                 posm.Visit_Order_c = String(cString: sqlite3_column_text(statement, 9))
-                
                 resultArray.append(posm)
             }
         } else {
             print("Failed to prepare statement for fetching unsynced POSMs.")
         }
-        
         sqlite3_finalize(statement)
         return resultArray
     }
@@ -143,7 +138,6 @@ class POSMTable: Database {
         } else {
             print("Failed to prepare statement for updating isSync.")
         }
-        
         sqlite3_finalize(statement)
     }
 }

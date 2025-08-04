@@ -175,8 +175,8 @@ class OutletSalesOrderVC: UIViewController {
     }
     
     func loadProductNames() {
-        productPickerData = product.map { $0.name }
-        productNamesToIDs = Dictionary(uniqueKeysWithValues: product.map { ($0.name, $0.id) })
+        productPickerData = product.map { $0.name ?? EMPTY }
+        productNamesToIDs = Dictionary(uniqueKeysWithValues: product.map { ($0.name ?? EMPTY, $0.id ?? EMPTY) })
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -321,6 +321,7 @@ class OutletSalesOrderVC: UIViewController {
         let storyboardBundle = Bundle.main
         let storyboard = UIStoryboard(name: "Home", bundle: storyboardBundle)
         let dashboardVC = storyboard.instantiateViewController(withIdentifier: "VisibilityVC") as! VisibilityVC
+        dashboardVC.accountId = accountId
         self.navigationController?.pushViewController(dashboardVC, animated: true)
     }
     
@@ -349,6 +350,7 @@ class OutletSalesOrderVC: UIViewController {
                 let dashboardVC = storyboard.instantiateViewController(withIdentifier: "PreviewOrderVw") as! PreviewOrderVw
                 dashboardVC.salesModel = self.tableData
                 dashboardVC.salesModelLineItems = self.tableDataLineItems
+                dashboardVC.accountId = self.accountId
                 self.navigationController?.pushViewController(dashboardVC, animated: true)
             } else {
                 let checkOutalert = UIAlertController(

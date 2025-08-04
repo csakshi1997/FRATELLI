@@ -14,6 +14,8 @@ class OutletDetailsVC: UIViewController {
     @IBOutlet var stac4: UIStackView?
     @IBOutlet var stac5: UIStackView?
     @IBOutlet var stac6: UIStackView?
+    @IBOutlet var stac7: UIStackView?
+    @IBOutlet var assetVisibilityVw: UIView?
     @IBOutlet var actionItme: UIButton?
     @IBOutlet var meetGreet: UIButton?
     @IBOutlet var annualtargetDataLbl: UILabel?
@@ -21,7 +23,9 @@ class OutletDetailsVC: UIViewController {
     @IBOutlet var yearToDateSaleCurrentLbl: UILabel?
     @IBOutlet var yearToDateSaleLastYearLbl: UILabel?
     @IBOutlet var growthYearLbl: UILabel?
-    @IBOutlet var marketShareLbl: UILabel?
+    @IBOutlet var previousmarketShareLbl: UILabel?
+    @IBOutlet var currentYearmarketShareLbl: UILabel?
+    @IBOutlet var assetVisibilityLbl: UILabel?
     var accountId : String = ""
     var outletsTable = OutletsTable()
     var completionHandler: (() -> Void)?
@@ -38,7 +42,18 @@ class OutletDetailsVC: UIViewController {
                                      yearToDateSaleCurrentLbl?.text = (((outlets?.years?.isEmpty ?? true) || (outlets?.years == "0")) ? "0.0%"  : outlets?.years)
         yearToDateSaleLastYearLbl?.text = (((outlets?.yearLastYear?.isEmpty ?? true) || (outlets?.yearLastYear == "0")) ? "0.0%" : outlets?.yearLastYear)
         growthYearLbl?.text = (((outlets?.growth?.isEmpty ?? true) || (outlets?.growth == "0")) ? "0.0%" : outlets?.growth)
-        marketShareLbl?.text = (((outlets?.marketShare?.isEmpty ?? true) || (outlets?.marketShare == "0")) ? "0.0%" : outlets?.marketShare)
+        previousmarketShareLbl?.text = (((outlets?.marketShare?.isEmpty ?? true) || (outlets?.marketShare == "0")) ? "0.0%" : outlets?.marketShare)
+        currentYearmarketShareLbl?.text = (((outlets?.Current_Market_Share__c?.isEmpty ?? true) || (outlets?.Current_Market_Share__c == "0")) ? "0.0%" : outlets?.Current_Market_Share__c)
+        if !(outlets?.Asset_Visibility__c?.isEmpty ?? true) {
+            let rawString = outlets?.Asset_Visibility__c
+            let cleanedString = rawString?
+                .replacingOccurrences(of: #"[\(\)"]"#, with: "", options: .regularExpression)
+                .replacingOccurrences(of: ";", with: "\n")
+            assetVisibilityLbl?.numberOfLines = 0
+            assetVisibilityLbl?.text = cleanedString
+        } else {
+            assetVisibilityLbl?.text = ""
+        }
         stac1?.layer.cornerRadius = 10.0
         stac1?.layer.masksToBounds = true
         stac2?.layer.cornerRadius = 10.0
@@ -51,15 +66,21 @@ class OutletDetailsVC: UIViewController {
         stac5?.layer.masksToBounds = true
         stac6?.layer.cornerRadius = 10.0
         stac6?.layer.masksToBounds = true
+        stac7?.layer.cornerRadius = 10.0
+        stac7?.layer.masksToBounds = true
         actionItme?.layer.cornerRadius = 10.0
         actionItme?.layer.masksToBounds = true
         meetGreet?.layer.cornerRadius = 10.0
         meetGreet?.layer.masksToBounds = true
+        assetVisibilityVw?.layer.cornerRadius = 10.0
+        assetVisibilityVw?.layer.masksToBounds = true
         stac1?.dropShadow()
         stac2?.dropShadow()
         stac3?.dropShadow()
         stac4?.dropShadow()
         stac6?.dropShadow()
+        stac7?.dropShadow()
+        assetVisibilityVw?.dropShadow()
         actionItme?.dropShadow()
         meetGreet?.dropShadow()
     }

@@ -75,8 +75,8 @@ class AdvocacyReqVC: UIViewController {
     
 
     func loadProductNames() {
-        productPickerData = product.map { $0.name }
-        productNamesToIDs = Dictionary(uniqueKeysWithValues: product.map { ($0.name, $0.id) })
+        productPickerData = product.map { $0.name ?? EMPTY }
+        productNamesToIDs = Dictionary(uniqueKeysWithValues: product.map { ($0.name ?? EMPTY, $0.id ?? EMPTY) })
     }
     
     func addTapGestureToDismissKeyboard() {

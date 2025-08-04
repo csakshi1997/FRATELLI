@@ -54,7 +54,7 @@ class PromotionsTable: Database {
             sqlite3_bind_text(statement, 7, promotion.productName?.productImageLink, -1, SQLITE_TRANSIENT)
             sqlite3_bind_text(statement, 8, promotion.attributes?.type, -1, SQLITE_TRANSIENT)
             sqlite3_bind_text(statement, 9, promotion.attributes?.url, -1, SQLITE_TRANSIENT)
-
+            
             if sqlite3_step(statement) != SQLITE_DONE {
                 let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
                 print("Error inserting promotion: \(errorMsg)")
@@ -68,7 +68,6 @@ class PromotionsTable: Database {
             print("Error preparing statement: \(errorMsg)")
             completion(false, errorMsg)
         }
-
         sqlite3_finalize(statement)
     }
 
@@ -81,7 +80,7 @@ class PromotionsTable: Database {
             FROM PromotionsTable
         """
         var statement: OpaquePointer?
-
+        
         if sqlite3_prepare_v2(Database.databaseConnection, query, -1, &statement, nil) == SQLITE_OK {
             while sqlite3_step(statement) == SQLITE_ROW {
                 let id = String(cString: sqlite3_column_text(statement, 0))
@@ -93,9 +92,9 @@ class PromotionsTable: Database {
                 let productImageLink = String(cString: sqlite3_column_text(statement, 6))
                 let attributesType = String(cString: sqlite3_column_text(statement, 7))
                 let attributesUrl = String(cString: sqlite3_column_text(statement, 8))
-
+                
                 let productAttributes = ProductName.Attributes(type: attributesType, url: attributesUrl)
-
+                
                 let product = ProductName(
                     id: productNameId,
                     name: productName,
@@ -103,9 +102,9 @@ class PromotionsTable: Database {
                     productImageLink: productImageLink,
                     attributes: productAttributes
                 )
-
+                
                 let promotionAttributes = Promotion.Attributes(type: attributesType, url: attributesUrl)
-
+                
                 let promotion = Promotion(
                     id: id,
                     name: name,
@@ -120,7 +119,7 @@ class PromotionsTable: Database {
         } else {
             print("Error fetching promotions: \(String(cString: sqlite3_errmsg(Database.databaseConnection)))")
         }
-
+        
         sqlite3_finalize(statement)
         return promotions
     }

@@ -37,7 +37,6 @@ class HomeAssetTable: Database {
         
         var statement: OpaquePointer?
         
-        // Begin a transaction for batch insertion
         if sqlite3_exec(Database.databaseConnection, "BEGIN TRANSACTION", nil, nil, nil) != SQLITE_OK {
             let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
             print("Error beginning transaction: \(errorMsg)")
@@ -47,7 +46,6 @@ class HomeAssetTable: Database {
         
         if sqlite3_prepare_v2(Database.databaseConnection, insertQuery, -1, &statement, nil) == SQLITE_OK {
             for item in items {
-                // Bind values to the statement
                 sqlite3_bind_text(statement, 1, item.assetName ?? "", -1, SQLITE_TRANSIENT)
                 sqlite3_bind_text(statement, 2, item.assetItemImg ?? "", -1, SQLITE_TRANSIENT)
                 sqlite3_bind_text(statement, 3, item.isSpaceAvailable ?? "", -1, SQLITE_TRANSIENT)
@@ -55,23 +53,19 @@ class HomeAssetTable: Database {
                 sqlite3_bind_text(statement, 5, item.isSync ?? "", -1, SQLITE_TRANSIENT)
                 sqlite3_bind_text(statement, 6, item.createdAt ?? "", -1, SQLITE_TRANSIENT)
                 
-                // Execute the statement
                 if sqlite3_step(statement) != SQLITE_DONE {
                     let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
                     print("Error inserting HomeAsset: \(errorMsg)")
                     
-                    // Rollback transaction and return an error
                     sqlite3_exec(Database.databaseConnection, "ROLLBACK", nil, nil, nil)
                     completion(false, errorMsg)
                     sqlite3_finalize(statement)
                     return
                 }
                 
-                // Reset the statement for the next item
                 sqlite3_reset(statement)
             }
             
-            // Commit the transaction
             if sqlite3_exec(Database.databaseConnection, "COMMIT", nil, nil, nil) != SQLITE_OK {
                 let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
                 print("Error committing transaction: \(errorMsg)")
@@ -86,7 +80,6 @@ class HomeAssetTable: Database {
             print("Error preparing statement: \(errorMsg)")
             completion(false, errorMsg)
         }
-        
         sqlite3_finalize(statement)
     }
     
@@ -94,7 +87,7 @@ class HomeAssetTable: Database {
         var resultArray = [HomeAssetModel]()
         var statement: OpaquePointer?
         let query = "SELECT * FROM HomeAssetTable"
-
+        
         if sqlite3_prepare_v2(Database.databaseConnection, query, -1, &statement, nil) == SQLITE_OK {
             while sqlite3_step(statement) == SQLITE_ROW {
                 var item = HomeAssetModel()
@@ -112,7 +105,6 @@ class HomeAssetTable: Database {
         } else {
             print("Failed to prepare statement for fetching HomeAssets.")
         }
-        
         return resultArray
     }
     

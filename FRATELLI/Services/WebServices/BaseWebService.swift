@@ -29,12 +29,14 @@ struct EndPoints {
     var SEND_CALL_FOR_HELP = "composite/tree/Call_For_Help__c/"
     var SEND_LOCATION = "composite/tree/HMI__User_Location_Track__c/"
     var SEND_SKIP = "composite/tree/Outlet_Adherance_Report__c/"
+    var SEND_OTHER_ACTIVITIES = "composite/tree/Visits__c/"
     var SEND_VISIT = "composite/sobjects/Visits__c/Id/"
     var QCR_IMAGE_UPLOAD = "services/apexrest/fileUpload"
     var SEND_DEVICE_TOKEN = "services/apexrest/checkUserDevice"
     var S_OBJECTS = "services/data/v59.0/composite/Sobjects"
     var GET_TIMEINTERVAL = "services/data/v59.0/query/?q=SELECT Id, Username, LastName, FirstName, MiddleName, Suffix, Name, CompanyName, Division, Department, Title, Street, City, State, PostalCode, Country, StateCode, CountryCode, Latitude, Longitude, GeocodeAccuracy, Address, Email, IsProfilePhotoActive, Branch__c, Employee_Code__c, Field_Sales_User__c, EMP_Channel__c, EMP_Zone__c, Area__c, Channel__c, State__c, Zone__c, Sub_Manager__c, Shift_Timing__c, First_Check_In__c, Last_Check_Out__c, Visit_Activity__c, Count__c, Remark_s__c, Check_In_Date_Time__c, Check_Out_Date_Time__c, Check_In_Geolocation__Latitude__s, Check_In_Geolocation__Longitude__s, Check_In_Geolocation__c, Check_Out_Geolocation__Latitude__s, Check_Out_Geolocation__Longitude__s, Check_Out_Geolocation__c, Comment__c, CheckInDate__c, CheckOut_Date__c, User_CheckIn_Update__c, Location_Proximity__c, Tracking_Interval_Sec__c, Device_Id__c FROM User where Id='\(Defaults.userId ?? "")'"
     var ERROR_LOG = "composite/tree/Error_log__c"
+    var SALESFORCE_IMAGE_UPLOAD = "composite/tree/Image_Visibility__c/"
 }
 
 enum ContentType: String {

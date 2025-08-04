@@ -55,9 +55,11 @@ class HomeView: UIViewController, CLLocationManagerDelegate, TodayVisitCellDeleg
     private var locationTable = LocationTable()
     private var timer: Timer?
     var locationSyncManager = LocationSyncManager()
-    let monitor = NWPathMonitor()
     let queue = DispatchQueue.global(qos: .background)
     var planDateInCaseAdhoc: String = ""
+    let monitor = NWPathMonitor()
+    let monitorQueue = DispatchQueue(label: "Monitor")
+    var isInternetReachable: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,8 +72,19 @@ class HomeView: UIViewController, CLLocationManagerDelegate, TodayVisitCellDeleg
         if !localIds.isEmpty {
             contactsTable.updateWorkingWithOutleForMultipleIds(localIds: localIds)
         }
+        monitor.pathUpdateHandler = { path in
+            if path.status == .satisfied {
+                print("✅ Internet is reachable")
+                self.isInternetReachable = true
+            } else {
+                print("🚫 No internet connection")
+                self.isInternetReachable = false
+            }
+        }
+            monitor.start(queue: monitorQueue)
         compareAppVersions()
         appVersionOperation.getInternals { error, response, statusCode in
+            
             if let error = error {
                 print("❌ Error: \(error)")
                 return
@@ -84,15 +97,13 @@ class HomeView: UIViewController, CLLocationManagerDelegate, TodayVisitCellDeleg
                 return
             }
             
-            Tracking_Interval_Sec__c = userInfo["Tracking_Interval_Sec__c"] as? Int ?? 0
-            Tracking_Interval_Sec__c = userInfo["Location_Proximity__c"] as? Int ?? 10
+            Defaults.Tracking_Interval_Sec__c = userInfo["Tracking_Interval_Sec__c"] as? Int ?? 60
+            Defaults.Location_Proximity__c = userInfo["Location_Proximity__c"] as? Int ?? 30
             
-            print("📌 Tracking Interval: \(Tracking_Interval_Sec__c)")
-            print("📌 Location Proximity: \(Tracking_Interval_Sec__c)")
+            print("📌 Tracking Interval: \(Defaults.Tracking_Interval_Sec__c ?? 60)")
+            print("📌 Location Proximity: \(Defaults.Location_Proximity__c ?? 30 )")
         }
     }
-    
-    
     
     func requestLocationPermission() {
         if CLLocationManager.authorizationStatus() == .notDetermined {
@@ -138,7 +149,8 @@ class HomeView: UIViewController, CLLocationManagerDelegate, TodayVisitCellDeleg
             let distance = lastLocation.distance(from: newLocation)
             print("📏 Distance from last saved location: \(distance) meters")
 
-            if distance < Double(Location_Proximity__c){
+            if distance < Double(Defaults.Location_Proximity__c ?? 30){
+                self.view.makeToast("User has not moved significantly (\(distance)m). Skipping location save.")
                 print("🚫 User has not moved significantly (\(distance)m). Skipping location save.")
                 return
             }
@@ -177,8 +189,8 @@ class HomeView: UIViewController, CLLocationManagerDelegate, TodayVisitCellDeleg
 //            return
 //        }
         
-        if let lastLoc = lastLocation, location.distance(from: lastLoc) < Double(Location_Proximity__c) {
-            print("⚠ Distance < \(Location_Proximity__c)m. Skipping save.")
+        if let lastLoc = lastLocation, location.distance(from: lastLoc) < Double(Defaults.Location_Proximity__c ?? 30) {
+            print("⚠ Distance < \(Defaults.Location_Proximity__c ?? 30)m. Skipping save.")
             return
         }
         
@@ -219,8 +231,7 @@ class HomeView: UIViewController, CLLocationManagerDelegate, TodayVisitCellDeleg
                     
                     if self.isInternetAvailable() {
                         print("🌐 Internet available. Attempting to sync...")
-                        DispatchQueue.main.async {
-                            print("🔄 Calling syncOfflineLocationsToServer()...")
+                        DispatchQueue.global(qos: .background).async {
                             self.locationSyncManager.syncOfflineLocationsToServer()
                         }
                     } else {
@@ -232,7 +243,7 @@ class HomeView: UIViewController, CLLocationManagerDelegate, TodayVisitCellDeleg
     }
     
     private func isInternetAvailable() -> Bool {
-        return monitor.currentPath.status == .satisfied
+        return isInternetReachable
     }
     
     func compareAppVersions() {
@@ -355,7 +366,7 @@ class HomeView: UIViewController, CLLocationManagerDelegate, TodayVisitCellDeleg
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
                 locationManager.delegate = self
                 locationManager.desiredAccuracy = kCLLocationAccuracyBest
-                locationManager.distanceFilter = Double(Tracking_Interval_Sec__c)
+                locationManager.distanceFilter = Double(Defaults.Tracking_Interval_Sec__c ?? 30)
                 locationManager.allowsBackgroundLocationUpdates = true
                 locationManager.pausesLocationUpdatesAutomatically = false
                 locationManager.requestAlwaysAuthorization()
@@ -532,6 +543,17 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource {
 //                        timeFormatter.timeStyle = .medium
 //                        Defaults.savedCurrentTime = timeFormatter.string(from: Date())
                         
+                        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+                            self.locationManager.delegate = self
+                            self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+                            self.locationManager.distanceFilter = Double(Defaults.Tracking_Interval_Sec__c ?? 30)
+                            self.locationManager.allowsBackgroundLocationUpdates = true
+                            self.locationManager.pausesLocationUpdatesAutomatically = false
+                            self.locationManager.requestAlwaysAuthorization()
+                            appDelegate.startLocationTracking()
+                            Defaults.isTrackingStart = true
+                        }
+                        
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateStyle = .medium
                         Defaults.savedCurrentDate = dateFormatter.string(from: Date())
@@ -698,6 +720,16 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func navigateToCheckInScreen(date: String, time: String, address: String, accountId: String, currentSelectedIdd: String, visitPlanDated: String) {
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.distanceFilter = Double(Defaults.Tracking_Interval_Sec__c ?? 30)
+            locationManager.allowsBackgroundLocationUpdates = true
+            locationManager.pausesLocationUpdatesAutomatically = false
+            locationManager.requestAlwaysAuthorization()
+            appDelegate.startLocationTracking()
+            Defaults.isTrackingStart = true
+        }
         print( accountId)
         print("\(accountId)\(CustomDateFormatter.getCurrentDateTime())")
         let storyboard = UIStoryboard(name: "Home", bundle: nil)

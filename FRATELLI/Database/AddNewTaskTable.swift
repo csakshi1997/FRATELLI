@@ -11,8 +11,7 @@ import SQLite3
 class AddNewTaskTable: Database {
     let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
     var statement: OpaquePointer? = nil
-
-    // Create table
+    
     func createAddNewTaskTable() {
         let createTableQuery = """
             CREATE TABLE IF NOT EXISTS AddNewTaskTable (
@@ -45,26 +44,23 @@ class AddNewTaskTable: Database {
             ["column": "Visit_Order_c", "defaultValue": ""]
         ])
     }
-
-    // Save task
+    
     func saveTasks(tasks: [AddNewTaskModel], completion: @escaping (Bool, [String]?) -> Void) {
         var failedTasks: [String] = []
         var successCount = 0
-
-        // Prepare the SQL query
+        
         let insertQuery = """
             INSERT INTO AddNewTaskTable (Id, priority, Settlement_Data__c, whatId, External_Id__c, OutletId, TaskSubject, TaskSubtype, IsTaskRequired,
             TaskStatus, OwnerId, Visit_Date_c, Visit_Order_c, CreatedTime, CreatedDate, createdAt, isSync, attributesType, attributesUrl)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """
-
-        // Start a transaction
+        
         if sqlite3_exec(Database.databaseConnection, "BEGIN TRANSACTION", nil, nil, nil) != SQLITE_OK {
             let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
             completion(false, ["Failed to begin transaction: \(errorMsg)"])
             return
         }
-
+        
         for task in tasks {
             var statement: OpaquePointer?
             if sqlite3_prepare_v2(Database.databaseConnection, insertQuery, -1, &statement, nil) == SQLITE_OK {
@@ -87,7 +83,7 @@ class AddNewTaskTable: Database {
                 sqlite3_bind_text(statement, 17, task.isSync ?? "", -1, SQLITE_TRANSIENT)
                 sqlite3_bind_text(statement, 18, task.attributes?.type ?? "", -1, SQLITE_TRANSIENT)
                 sqlite3_bind_text(statement, 19, task.attributes?.url ?? "", -1, SQLITE_TRANSIENT)
-
+                
                 if sqlite3_step(statement) != SQLITE_DONE {
                     let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
                     failedTasks.append("Task ID \(task.External_Id__c ?? "unknown"): \(errorMsg)")
@@ -100,25 +96,23 @@ class AddNewTaskTable: Database {
             }
             sqlite3_finalize(statement)
         }
-
-        // Commit the transaction
+        
         if failedTasks.isEmpty {
             if sqlite3_exec(Database.databaseConnection, "COMMIT", nil, nil, nil) == SQLITE_OK {
-                completion(true, nil) // All tasks saved successfully
+                completion(true, nil)
             } else {
                 let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
                 completion(false, ["Failed to commit transaction: \(errorMsg)"])
             }
         } else {
-            sqlite3_exec(Database.databaseConnection, "ROLLBACK", nil, nil, nil)
-            completion(false, failedTasks) // Some tasks failed
+            sqlite3_exec(Database.databaseConnection, "ROLLBACK", nil, nil, nil) // Some tasks failed
         }
     }
     
     func saveTasksFromSalesForce(task: AddNewTaskModel, completion: @escaping (Bool, String?) -> Void) {
         var statement: OpaquePointer?
         let insertQuery = "INSERT INTO AddNewTaskTable (Id, priority, Settlement_Data__c, whatId, External_Id__c, OutletId, TaskSubject, TaskSubtype, IsTaskRequired, TaskStatus, OwnerId, Visit_Date_c, Visit_Order_c, CreatedTime, CreatedDate, createdAt, isSync, attributesType, attributesUrl) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-
+        
         if sqlite3_prepare_v2(Database.databaseConnection, insertQuery, -1, &statement, nil) == SQLITE_OK {
             sqlite3_bind_text(statement, 1, task.Id ?? "", -1, SQLITE_TRANSIENT)
             sqlite3_bind_text(statement, 2, task.priority ?? "", -1, SQLITE_TRANSIENT)
@@ -152,13 +146,10 @@ class AddNewTaskTable: Database {
             print("Error preparing statement: \(errorMsg)")
             completion(false, errorMsg)
         }
-
+        
         sqlite3_finalize(statement)
     }
     
-    
-    
-    // Fetch all tasks
     func getTasks() -> [AddNewTaskModel] {
         var tasks = [AddNewTaskModel]()
         let query = "SELECT * FROM AddNewTaskTable"
@@ -194,7 +185,7 @@ class AddNewTaskTable: Database {
         sqlite3_finalize(statement)
         return tasks
     }
-        
+    
     func getTasksAccordingToWhatId(forWhatId whatId: String) -> [AddNewTaskModel] {
         var resultArray = [AddNewTaskModel]()
         var statement: OpaquePointer?
@@ -295,6 +286,4 @@ class AddNewTaskTable: Database {
         }
         sqlite3_finalize(statement)
     }
-
-    
 }

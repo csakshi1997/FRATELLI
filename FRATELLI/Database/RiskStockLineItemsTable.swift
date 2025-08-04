@@ -34,8 +34,7 @@ class RiskStockLineItemsTable: Database {
             print("Error creating RiskStockLineItems table")
         }
     }
-
-    // Save data into RiskStockLineItems table
+    
     func saveRiskStockLineItem(riskStockLineItem: RiskStockLineItem, completion: @escaping (Bool, String?) -> Void) {
         var statement: OpaquePointer?
         let insertQuery = """
@@ -67,11 +66,10 @@ class RiskStockLineItemsTable: Database {
             print("Failed to prepare insert statement: \(errorMsg)")
             completion(false, errorMsg)
         }
-
+        
         sqlite3_finalize(statement)
     }
     
-    // Fetch all RiskStockLineItem records
     func getRiskStockLineItems() -> [RiskStockLineItem] {
         var resultArray = [RiskStockLineItem]()
         var statement: OpaquePointer?
@@ -95,12 +93,10 @@ class RiskStockLineItemsTable: Database {
                 )
                 resultArray.append(riskStockLineItem)
             }
-            
             sqlite3_finalize(statement)
         } else {
             print("Failed to prepare statement for fetching RiskStockLineItems.")
         }
-        
         return resultArray
     }
     
@@ -120,11 +116,11 @@ class RiskStockLineItemsTable: Database {
                 lineItem.ownerId = String(cString: sqlite3_column_text(statement, 6))
                 lineItem.isSync = String(cString: sqlite3_column_text(statement, 7))
                 lineItem.createdAt = String(cString: sqlite3_column_text(statement, 8))
-
+                
                 let attributesType = String(cString: sqlite3_column_text(statement, 9))
                 let attributesUrl = String(cString: sqlite3_column_text(statement, 10))
                 lineItem.attributes = RiskStockLineItem.Attributes(type: attributesType, url: attributesUrl)
-
+                
                 resultArray.append(lineItem)
             }
             sqlite3_finalize(statement)

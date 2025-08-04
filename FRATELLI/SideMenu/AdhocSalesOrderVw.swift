@@ -348,8 +348,8 @@ class AdhocSalesOrderVw: UIViewController {
     }
     
     func loadProductNames() {
-        productPickerData = product.map { $0.name }
-        productNamesToIDs = Dictionary(uniqueKeysWithValues: product.map { ($0.name, $0.id) })
+        productPickerData = product.map { $0.name ?? "" }
+        productNamesToIDs = Dictionary(uniqueKeysWithValues: product.map { ($0.name ?? "", $0.id ?? "") })
     }
     
     override func viewWillAppear(_ animated: Bool) {

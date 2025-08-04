@@ -48,11 +48,10 @@ class ProductsTable: Database {
         }
     }
     
-    // Insert data into ProductsTable
     func saveProduct(product: Product, completion: @escaping (Bool, String?) -> Void) {
         var statement: OpaquePointer?
         let insertQuery = """
-            INSERT INTO ProductsTable (
+            INSERT OR REPLACE INTO ProductsTable (
                 abbreviation, bottleCan, bottleSize, brandCode,
                 category, conversionRatio, createdDate, gst,
                 id, isDeleted, itemType, name,
@@ -61,48 +60,65 @@ class ProductsTable: Database {
                 sizeInMl, type, attributesType, attributesUrl, isSync
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
         """
-
+        
         if sqlite3_prepare_v2(Database.databaseConnection, insertQuery, -1, &statement, nil) == SQLITE_OK {
-            sqlite3_bind_text(statement, 1, product.abbreviation, -1, SQLITE_TRANSIENT)
-            sqlite3_bind_text(statement, 2, product.bottleCan ?? "", -1, SQLITE_TRANSIENT)
-            sqlite3_bind_text(statement, 3, product.bottleSize ?? "", -1, SQLITE_TRANSIENT)
-            sqlite3_bind_text(statement, 4, product.brandCode, -1, SQLITE_TRANSIENT)
-            sqlite3_bind_text(statement, 5, product.category, -1, SQLITE_TRANSIENT)
-            sqlite3_bind_int(statement, 6, Int32(product.conversionRatio))
-            sqlite3_bind_text(statement, 7, product.createdDate, -1, SQLITE_TRANSIENT)
-            sqlite3_bind_text(statement, 8, product.gst ?? "", -1, SQLITE_TRANSIENT)
-            sqlite3_bind_text(statement, 9, product.id, -1, SQLITE_TRANSIENT)
-            sqlite3_bind_int(statement, 10, product.isDeleted ? 1 : 0)
-            sqlite3_bind_text(statement, 11, product.itemType, -1, SQLITE_TRANSIENT)
-            sqlite3_bind_text(statement, 12, product.name, -1, SQLITE_TRANSIENT)
-            sqlite3_bind_text(statement, 13, product.ownerId, -1, SQLITE_TRANSIENT)
-            sqlite3_bind_int(statement, 14, Int32(product.priority))
-            sqlite3_bind_text(statement, 15, product.productCategory ?? "", -1, SQLITE_TRANSIENT)
-            sqlite3_bind_text(statement, 16, product.productCode ?? "", -1, SQLITE_TRANSIENT)
-            sqlite3_bind_text(statement, 17, product.productFamily ?? "", -1, SQLITE_TRANSIENT)
-            sqlite3_bind_text(statement, 18, product.productId, -1, SQLITE_TRANSIENT)
-            sqlite3_bind_text(statement, 19, product.productType ?? "", -1, SQLITE_TRANSIENT)
-            sqlite3_bind_text(statement, 20, product.sizeCode, -1, SQLITE_TRANSIENT)
-            sqlite3_bind_int(statement, 21, Int32(product.sizeInMl))
-            sqlite3_bind_text(statement, 22, product.type, -1, SQLITE_TRANSIENT)
-            sqlite3_bind_text(statement, 23, product.attributes?.type ?? "", -1, SQLITE_TRANSIENT)
-            sqlite3_bind_text(statement, 24, product.attributes?.url ?? "", -1, SQLITE_TRANSIENT)
-            sqlite3_bind_text(statement, 25, product.isSync ?? "", -1, SQLITE_TRANSIENT)
-
+            
+            func bindText(_ index: Int32, _ value: String?) {
+                sqlite3_bind_text(statement, index, value ?? "", -1, SQLITE_TRANSIENT)
+            }
+            
+            func bindInt(_ index: Int32, _ value: Int?) {
+                sqlite3_bind_int(statement, index, Int32(value ?? 0))
+            }
+            
+            func bindDouble(_ index: Int32, _ value: Double?) {
+                sqlite3_bind_double(statement, index, value ?? 0.0)
+            }
+            
+            bindText(1, product.abbreviation)
+            bindText(2, product.bottleCan)
+            bindText(3, product.bottleSize)
+            bindText(4, product.brandCode)
+            bindText(5, product.category)
+            bindInt(6, product.conversionRatio)
+            bindText(7, product.createdDate)
+            bindText(8, product.gst)
+            bindText(9, product.id)
+            sqlite3_bind_int(statement, 10, (product.isDeleted ?? false) ? 1 : 0)
+            bindText(11, product.itemType)
+            bindText(12, product.name)
+            bindText(13, product.ownerId)
+            bindInt(14, product.priority)
+            bindText(15, product.productCategory)
+            bindText(16, product.productCode)
+            bindText(17, product.productFamily)
+            bindText(18, product.productId)
+            bindText(19, product.productType)
+            bindText(20, product.sizeCode)
+            bindInt(21, product.sizeInMl)
+            bindText(22, product.type)
+            bindText(23, product.attributes?.type)
+            bindText(24, product.attributes?.url)
+            bindText(25, product.isSync)
+            
             if sqlite3_step(statement) != SQLITE_DONE {
                 let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
-                print("Error inserting product: \(errorMsg)")
-                completion(false, errorMsg) // Call completion with failure
+                print("""
+                🔴 Insert failed for Product:
+                ID: \(product.id ?? "nil"), Name: \(product.name ?? "nil")
+                Error: \(errorMsg)
+                """)
+                completion(false, errorMsg)
             } else {
-                print("Product inserted successfully")
-                completion(true, nil) // Call completion with success
+                print("✅ Saved: \(product.name ?? "Unnamed") (\(product.id ?? "nil"))")
+                completion(true, nil)
             }
         } else {
             let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
-            print("Error preparing statement: \(errorMsg)")
-            completion(false, errorMsg) // Call completion with failure
+            print("🔴 Failed to prepare insert: \(errorMsg)")
+            completion(false, errorMsg)
         }
-
+        
         sqlite3_finalize(statement)
     }
     
@@ -136,7 +152,6 @@ class ProductsTable: Database {
                 let sizeInMl = Int(sqlite3_column_int(statement, 21))
                 let type = String(cString: sqlite3_column_text(statement, 22))
                 
-                // Attributes
                 let attributes = Product.Attributes(
                     type: String(cString: sqlite3_column_text(statement, 23)),
                     url: String(cString: sqlite3_column_text(statement, 24))
@@ -176,10 +191,7 @@ class ProductsTable: Database {
         } else {
             print("Failed to prepare statement for fetching products.")
         }
-        
         return resultArray
     }
-
-
 }
 

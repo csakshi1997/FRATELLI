@@ -77,6 +77,26 @@ class Defaults {
         }
     }
     
+    static var id: String? {
+        get {
+            return UserDefaults.standard.object(forKey: "Id") as? String ?? EMPTY
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "Id")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
+    static var userArea: String? {
+        get {
+            return UserDefaults.standard.object(forKey: "UserArea") as? String ?? EMPTY
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "UserArea")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
     static var savedCurrentDate: String? {
         get {
             return UserDefaults.standard.string(forKey: "savedCurrentDate") ?? EMPTY
@@ -174,6 +194,27 @@ class Defaults {
             UserDefaults.standard.synchronize()
         }
     }
+    
+    static var Location_Proximity__c: Int? {
+        get {
+            return UserDefaults.standard.object(forKey: "Location_Proximity__c") as? Int ?? 60
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "Location_Proximity__c")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
+    static var Tracking_Interval_Sec__c: Int? {
+        get {
+            return UserDefaults.standard.object(forKey: "Tracking_Interval_Sec__c") as? Int ?? 30
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "Tracking_Interval_Sec__c")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
 
     static var userEmail: String? {
         get {

@@ -19,6 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var lastSavedLocation: CLLocation?
     var locationTable = LocationTable()
     let monitor = NWPathMonitor()
+    let monitorQueue = DispatchQueue(label: "Monitor")
+    var isInternetReachable: Bool = false
     var customDateFormatter = CustomDateFormatter()
     let queue = DispatchQueue.global(qos: .background)
     func getFormattedDateTime() -> String {
@@ -35,6 +37,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
         IQKeyboardManager.shared.isEnabled = true
         Database.createDatabase()
+        monitor.pathUpdateHandler = { path in
+            if path.status == .satisfied {
+                print("✅ Internet is reachable")
+                self.isInternetReachable = true
+            } else {
+                print("🚫 No internet connection")
+                self.isInternetReachable = false
+            }
+        }
+        monitor.start(queue: monitorQueue)
+        if Defaults.isTrackingStart ?? false {
+            startLocationTracking()
+        }
         return true
     }
     
@@ -59,6 +74,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             self.locationManager.allowsBackgroundLocationUpdates = true
             self.locationManager.pausesLocationUpdatesAutomatically = false
             self.locationManager.startUpdatingLocation()
+            self.locationManager.delegate = self
+            self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            self.locationManager.distanceFilter = Double(Defaults.Tracking_Interval_Sec__c ?? 0)
+            self.locationManager.requestAlwaysAuthorization()
             self.scheduleBackgroundLocationSync()
         }
         scheduleAutoStopTracking()
@@ -121,7 +140,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             mockLocationValue = 0
         }
         
-        // **Ensure the first location is always saved**
         if lastSavedLocation == nil {
             print("📍 First location update received. Saving immediately.")
             lastSavedLocation = newLocation
@@ -133,18 +151,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             return
         }
         
-        // **Check if user has moved at least 80 meters**
         if let lastLocation = lastSavedLocation {
             let distance = lastLocation.distance(from: newLocation)
             print("📏 Distance from last saved location: \(distance) meters")
             
-            if distance < Double(Location_Proximity__c)  {
+            if distance < Double(Defaults.Location_Proximity__c ?? 30)  {
                 print("🚫 User has not moved significantly (\(distance)m). Skipping location save.")
                 return
             }
         }
         
-        // **Update lastSavedLocation and save the new location**
         lastSavedLocation = newLocation
         print("✅ User moved \(lastSavedLocation?.distance(from: newLocation) ?? 0)m, saving location.")
         
@@ -161,8 +177,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let deviceModel = UIDevice.current.model
         let deviceManufacturer = "Apple"
         
-        if let lastLoc = lastLocation, location.distance(from: lastLoc) < Double(Location_Proximity__c) {
-            print("⚠ Distance < \(Double(Location_Proximity__c)) m. Skipping save.")
+        if let lastLoc = lastLocation, location.distance(from: lastLoc) < Double(Defaults.Location_Proximity__c ?? 30) {
+            print("⚠ Distance < \(Double(Defaults.Location_Proximity__c ?? 30))m. Skipping save.")
             return
         }
         
@@ -195,7 +211,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 if success {
                     print("✅ Location saved. Checking internet for sync...")
                     if self.isInternetAvailable() {
-                        DispatchQueue.main.async {
+                        DispatchQueue.global(qos: .background).async {
                             self.locationSyncManager.syncOfflineLocationsToServer()
                         }
                     }
@@ -205,6 +221,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     private func isInternetAvailable() -> Bool {
-        return monitor.currentPath.status == .satisfied
+        return isInternetReachable
     }
 }

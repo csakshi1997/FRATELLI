@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		530940612D2E94AF00EC4790 /* POSMRequisitionTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530940602D2E94AF00EC4790 /* POSMRequisitionTable.swift */; };
 		530940632D2E94BC00EC4790 /* POSMRequisitionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530940622D2E94BC00EC4790 /* POSMRequisitionModel.swift */; };
+		531112B12E0D59C800B97E62 /* AssetRequisitionServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531112B02E0D59C800B97E62 /* AssetRequisitionServerModel.swift */; };
+		531112B32E0D5A0400B97E62 /* AssetRequisitionServerTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531112B22E0D5A0400B97E62 /* AssetRequisitionServerTable.swift */; };
+		531517E22E04276A007882D1 /* UploadFileToServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531517E12E04276A007882D1 /* UploadFileToServer.swift */; };
+		531517E42E05294F007882D1 /* VisibilityServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531517E32E05294F007882D1 /* VisibilityServerModel.swift */; };
+		531517E62E052966007882D1 /* VisibilityServerTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531517E52E052966007882D1 /* VisibilityServerTable.swift */; };
 		531761682CE345D7005FC7A0 /* Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531761582CE345D7005FC7A0 /* Delegate.swift */; };
 		5317616A2CE345D7005FC7A0 /* Segue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5317615A2CE345D7005FC7A0 /* Segue.swift */; };
 		5317616B2CE345D7005FC7A0 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531761592CE345D7005FC7A0 /* Preferences.swift */; };
@@ -148,6 +153,11 @@
 		53CF325C2CDE1B6900B87644 /* AdvocacyTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53CF325B2CDE1B6900B87644 /* AdvocacyTable.swift */; };
 		53D99B612CEF3B4800CF2EF3 /* CheckInScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D99B602CEF3B4800CF2EF3 /* CheckInScreen.swift */; };
 		53D99B642CEF40F700CF2EF3 /* TodayVisitCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D99B632CEF40F700CF2EF3 /* TodayVisitCell.swift */; };
+		53E30DD32E01728600A2A109 /* POSMDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E30DD22E01728600A2A109 /* POSMDetailsVC.swift */; };
+		53E30DD52E01A42800A2A109 /* UserDetailsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E30DD42E01A42800A2A109 /* UserDetailsModel.swift */; };
+		53E30DD72E028BEC00A2A109 /* OtherActivityVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E30DD62E028BEC00A2A109 /* OtherActivityVC.swift */; };
+		53E30DD92E02A0B100A2A109 /* OtherActivityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E30DD82E02A0B100A2A109 /* OtherActivityModel.swift */; };
+		53E30DDB2E02A19600A2A109 /* OtherActivityTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E30DDA2E02A19600A2A109 /* OtherActivityTable.swift */; };
 		71CE51B140A6533DE0A6714D /* Pods_FRATELLI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCFCD06B36BB036EB4DAFE4B /* Pods_FRATELLI.framework */; };
 /* End PBXBuildFile section */
 
@@ -155,6 +165,11 @@
 		093CABB7337C77216896B014 /* Pods-FRATELLI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FRATELLI.release.xcconfig"; path = "Target Support Files/Pods-FRATELLI/Pods-FRATELLI.release.xcconfig"; sourceTree = "<group>"; };
 		530940602D2E94AF00EC4790 /* POSMRequisitionTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POSMRequisitionTable.swift; sourceTree = "<group>"; };
 		530940622D2E94BC00EC4790 /* POSMRequisitionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POSMRequisitionModel.swift; sourceTree = "<group>"; };
+		531112B02E0D59C800B97E62 /* AssetRequisitionServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetRequisitionServerModel.swift; sourceTree = "<group>"; };
+		531112B22E0D5A0400B97E62 /* AssetRequisitionServerTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetRequisitionServerTable.swift; sourceTree = "<group>"; };
+		531517E12E04276A007882D1 /* UploadFileToServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadFileToServer.swift; sourceTree = "<group>"; };
+		531517E32E05294F007882D1 /* VisibilityServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisibilityServerModel.swift; sourceTree = "<group>"; };
+		531517E52E052966007882D1 /* VisibilityServerTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisibilityServerTable.swift; sourceTree = "<group>"; };
 		531761572CE345D7005FC7A0 /* BasicTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicTransitionAnimator.swift; sourceTree = "<group>"; };
 		531761582CE345D7005FC7A0 /* Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delegate.swift; sourceTree = "<group>"; };
 		531761592CE345D7005FC7A0 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
@@ -297,6 +312,11 @@
 		53CF325B2CDE1B6900B87644 /* AdvocacyTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvocacyTable.swift; sourceTree = "<group>"; };
 		53D99B602CEF3B4800CF2EF3 /* CheckInScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInScreen.swift; sourceTree = "<group>"; };
 		53D99B632CEF40F700CF2EF3 /* TodayVisitCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayVisitCell.swift; sourceTree = "<group>"; };
+		53E30DD22E01728600A2A109 /* POSMDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POSMDetailsVC.swift; sourceTree = "<group>"; };
+		53E30DD42E01A42800A2A109 /* UserDetailsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsModel.swift; sourceTree = "<group>"; };
+		53E30DD62E028BEC00A2A109 /* OtherActivityVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherActivityVC.swift; sourceTree = "<group>"; };
+		53E30DD82E02A0B100A2A109 /* OtherActivityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherActivityModel.swift; sourceTree = "<group>"; };
+		53E30DDA2E02A19600A2A109 /* OtherActivityTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherActivityTable.swift; sourceTree = "<group>"; };
 		DB5C11BEF32CBBEC18F699CF /* Pods-FRATELLI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FRATELLI.debug.xcconfig"; path = "Target Support Files/Pods-FRATELLI/Pods-FRATELLI.debug.xcconfig"; sourceTree = "<group>"; };
 		DCFCD06B36BB036EB4DAFE4B /* Pods_FRATELLI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FRATELLI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -417,6 +437,7 @@
 				538870A42D2FA050007B93FA /* GetLocationVC.swift */,
 				538870A62D2FD2F7007B93FA /* ImagePopUpVc.swift */,
 				533C6B522D36955000B9AEA5 /* ImagePopForVisibility.swift */,
+				53E30DD62E028BEC00A2A109 /* OtherActivityVC.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -454,6 +475,7 @@
 			children = (
 				5358D0D02CC6B9050052F548 /* POSM.storyboard */,
 				5358D0D22CC6C6A10052F548 /* POSMVC.swift */,
+				53E30DD22E01728600A2A109 /* POSMDetailsVC.swift */,
 			);
 			path = POSM;
 			sourceTree = "<group>";
@@ -477,6 +499,7 @@
 				535B17CB2D53691000B52548 /* AppVersionOperation.swift */,
 				53BFC4132D6863CB0041505A /* QCROperation.swift */,
 				539292602D8C1D9A00FB6E09 /* LocationSyncManager.swift */,
+				531517E12E04276A007882D1 /* UploadFileToServer.swift */,
 			);
 			path = WebServices;
 			sourceTree = "<group>";
@@ -538,6 +561,10 @@
 				535B17C92D533A8700B52548 /* SkipModel.swift */,
 				53BFC4812D6EE0D40041505A /* DistributorAccountsModel.swift */,
 				5392925E2D8C1CEE00FB6E09 /* LocationModel.swift */,
+				53E30DD42E01A42800A2A109 /* UserDetailsModel.swift */,
+				53E30DD82E02A0B100A2A109 /* OtherActivityModel.swift */,
+				531517E32E05294F007882D1 /* VisibilityServerModel.swift */,
+				531112B02E0D59C800B97E62 /* AssetRequisitionServerModel.swift */,
 			);
 			path = GlobalModel;
 			sourceTree = "<group>";
@@ -573,6 +600,9 @@
 				535B17C72D533A7D00B52548 /* SkipTable.swift */,
 				53BFC47F2D6EE08C0041505A /* DistributorAccountsTable.swift */,
 				5392925C2D8C196C00FB6E09 /* LocationTable.swift */,
+				53E30DDA2E02A19600A2A109 /* OtherActivityTable.swift */,
+				531517E52E052966007882D1 /* VisibilityServerTable.swift */,
+				531112B22E0D5A0400B97E62 /* AssetRequisitionServerTable.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -824,20 +854,26 @@
 				53C349BE2D19360A002C22E6 /* AddNewTaskTable.swift in Sources */,
 				53CC000E2CC8D9A300E4155D /* RecommendationTable.swift in Sources */,
 				532DD9DF2D153859006FA744 /* HomePOSMModel.swift in Sources */,
+				531517E62E052966007882D1 /* VisibilityServerTable.swift in Sources */,
 				5327E3462D19568B00B6157F /* SyncInVC.swift in Sources */,
 				53B8B9FC2CF9F400006F07B0 /* OnAssetsTable.swift in Sources */,
 				53743DC62CF6FF5300FED53A /* PromotionModel.swift in Sources */,
 				5392925F2D8C1CEE00FB6E09 /* LocationModel.swift in Sources */,
 				5358D0D72CC6C6C90052F548 /* OrdersVC.swift in Sources */,
 				53CC00142CC8DC3900E4155D /* ProductModel.swift in Sources */,
+				53E30DD92E02A0B100A2A109 /* OtherActivityModel.swift in Sources */,
 				5358D0AA2CC6861E0052F548 /* TabbarView.swift in Sources */,
 				53CC00022CC8C66000E4155D /* ContactsTable.swift in Sources */,
 				53CD3C832CC638CD007E923D /* StringConstant.swift in Sources */,
 				53CC00082CC8D97A00E4155D /* OutletsTable.swift in Sources */,
+				53E30DD32E01728600A2A109 /* POSMDetailsVC.swift in Sources */,
 				535B17CC2D53691000B52548 /* AppVersionOperation.swift in Sources */,
 				53CEF3F82D3A5CA500F2B3F8 /* DropDownManager.swift in Sources */,
 				535B17C82D533A7D00B52548 /* SkipTable.swift in Sources */,
+				531112B32E0D5A0400B97E62 /* AssetRequisitionServerTable.swift in Sources */,
+				531517E42E05294F007882D1 /* VisibilityServerModel.swift in Sources */,
 				53743DCE2CF7283C00FED53A /* PromotionRecomVC.swift in Sources */,
+				53E30DD72E028BEC00A2A109 /* OtherActivityVC.swift in Sources */,
 				53889ECE2D101600004EFBF1 /* SalesOrderTable.swift in Sources */,
 				538870A52D2FA050007B93FA /* GetLocationVC.swift in Sources */,
 				53CD3BFF2CC272B1007E923D /* Extensions.swift in Sources */,
@@ -870,6 +906,7 @@
 				533419992CF8836900CDF41A /* RiskStockLineItemsTable.swift in Sources */,
 				53B8BA002D01941A006F07B0 /* VisibilityVC.swift in Sources */,
 				53C4EBBF2D1EAE9900712D37 /* ActionItemPopUp.swift in Sources */,
+				53E30DDB2E02A19600A2A109 /* OtherActivityTable.swift in Sources */,
 				5369C5662D02DDF300CD0B34 /* AddNewTasksVC.swift in Sources */,
 				5358D0BA2CC68AB90052F548 /* HomeView.swift in Sources */,
 				532DD9E12D1538B6006FA744 /* HomePOSMLineItemModel.swift in Sources */,
@@ -903,10 +940,12 @@
 				53CC000C2CC8D99600E4155D /* ProductsTable.swift in Sources */,
 				533419952CF8825100CDF41A /* RiskStockLineItemsModel.swift in Sources */,
 				53A3836D2CF5DA7A000A6EFD /* OutletDetailsVC.swift in Sources */,
+				531517E22E04276A007882D1 /* UploadFileToServer.swift in Sources */,
 				531761682CE345D7005FC7A0 /* Delegate.swift in Sources */,
 				5317616A2CE345D7005FC7A0 /* Segue.swift in Sources */,
 				5317616B2CE345D7005FC7A0 /* Preferences.swift in Sources */,
 				53BFC4822D6EE0D40041505A /* DistributorAccountsModel.swift in Sources */,
+				53E30DD52E01A42800A2A109 /* UserDetailsModel.swift in Sources */,
 				53B82F712D1404F2000D4578 /* POSMLineItemsTable.swift in Sources */,
 				53B8B9F22CF99E31006F07B0 /* SyncDownOperations.swift in Sources */,
 				533C6B552D37CB8600B9AEA5 /* ContactDetailsVC.swift in Sources */,
@@ -920,6 +959,7 @@
 				5317616E2CE345D7005FC7A0 /* StatusBar.swift in Sources */,
 				53C349AE2D186272002C22E6 /* CallForHelpTable.swift in Sources */,
 				5317616F2CE345D7005FC7A0 /* UIViewController+Container.swift in Sources */,
+				531112B12E0D59C800B97E62 /* AssetRequisitionServerModel.swift in Sources */,
 				533C6B532D36955000B9AEA5 /* ImagePopForVisibility.swift in Sources */,
 				531761702CE345D7005FC7A0 /* TransitionContext.swift in Sources */,
 				531761712CE345D7005FC7A0 /* UIView+Container.swift in Sources */,
@@ -987,7 +1027,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.13;
+				MARKETING_VERSION = 1.0.16;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winesfratelli;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1031,7 +1071,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.13;
+				MARKETING_VERSION = 1.0.16;
 				PRODUCT_BUNDLE_IDENTIFIER = com.winesfratelli;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

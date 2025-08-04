@@ -39,7 +39,7 @@ class OnAssetsTable: Database {
             sqlite3_bind_text(statement, 3, assetModel.Value ?? "", -1, SQLITE_TRANSIENT)
             sqlite3_bind_text(statement, 4, assetModel.attributes?.type ?? "", -1, SQLITE_TRANSIENT)
             sqlite3_bind_text(statement, 5, assetModel.attributes?.url ?? "", -1, SQLITE_TRANSIENT)
-
+            
             if sqlite3_step(statement) != SQLITE_DONE {
                 let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
                 print("Error inserting OnTrade: \(errorMsg)")
@@ -51,9 +51,9 @@ class OnAssetsTable: Database {
         } else {
             let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
             print("Error preparing statement: \(errorMsg)")
-            completion(false, errorMsg) // Call completion with failure
+            completion(false, errorMsg)
         }
-
+        
         sqlite3_finalize(statement)
     }
     
@@ -61,7 +61,7 @@ class OnAssetsTable: Database {
         var resultArray = [AssetModel]()
         var statement: OpaquePointer?
         let query = "SELECT * FROM OnAssetsTable"
-
+        
         if sqlite3_prepare_v2(Database.databaseConnection, query, -1, &statement, nil) == SQLITE_OK {
             while sqlite3_step(statement) == SQLITE_ROW {
                 var assetModel = AssetModel()
@@ -78,7 +78,6 @@ class OnAssetsTable: Database {
         } else {
             print("Failed to prepare statement for fetching OnTrade records.")
         }
-        
         return resultArray
     }
     
@@ -86,10 +85,9 @@ class OnAssetsTable: Database {
     func clearAssetsTable(completion: @escaping (Bool, String?) -> Void) {
         var statement: OpaquePointer?
         let deleteQuery = "DELETE FROM OnAssetsTable"
-
+        
         if sqlite3_prepare_v2(Database.databaseConnection, deleteQuery, -1, &statement, nil) == SQLITE_OK {
             if sqlite3_step(statement) != SQLITE_DONE {
-                // Handle error during execution
                 let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
                 print("Error clearing assets table: \(errorMsg)")
                 completion(false, errorMsg)
@@ -98,12 +96,10 @@ class OnAssetsTable: Database {
                 completion(true, nil)
             }
         } else {
-            // Handle error preparing the statement
             let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
             print("Error preparing clear table statement: \(errorMsg)")
             completion(false, errorMsg)
         }
-
         sqlite3_finalize(statement)
     }
 }

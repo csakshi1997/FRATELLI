@@ -11,7 +11,6 @@ import SQLite3
 class SalesOrderLineItemsTable: Database {
     let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
     
-    // Create the SalesOrderLineItemsTable
     func createSalesOrderLineItemsTable() {
         let createTableQuery = """
         CREATE TABLE IF NOT EXISTS SalesOrderLineItemsTable (
@@ -41,7 +40,6 @@ class SalesOrderLineItemsTable: Database {
         }
     }
     
-    // Insert data into SalesOrderLineItemsTable
     func saveSalesOrderLineItems(items: [SalesOrderLineItems], completion: @escaping (Bool, String?) -> Void) {
         let insertQuery = """
         INSERT INTO SalesOrderLineItemsTable (externalId, productId, productName, schemeType, totalAmountINR, freeIssueQuantityInBottles, schemePercentage, productQuantity, dateTime, ownerId, createdAt, isSync, attributesType, attributesUrl)
@@ -50,7 +48,6 @@ class SalesOrderLineItemsTable: Database {
         
         var statement: OpaquePointer?
         
-        // Begin a transaction to batch insert
         if sqlite3_exec(Database.databaseConnection, "BEGIN TRANSACTION", nil, nil, nil) != SQLITE_OK {
             let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
             print("Error beginning transaction: \(errorMsg)")
@@ -60,7 +57,6 @@ class SalesOrderLineItemsTable: Database {
         
         if sqlite3_prepare_v2(Database.databaseConnection, insertQuery, -1, &statement, nil) == SQLITE_OK {
             for item in items {
-                // Bind values to the statement
                 sqlite3_bind_text(statement, 1, item.External_Id__c ?? "", -1, SQLITE_TRANSIENT)
                 sqlite3_bind_text(statement, 2, item.Product__ID ?? "", -1, SQLITE_TRANSIENT)
                 sqlite3_bind_text(statement, 3, item.Product_Name ?? "", -1, SQLITE_TRANSIENT)
@@ -74,34 +70,28 @@ class SalesOrderLineItemsTable: Database {
                 sqlite3_bind_text(statement, 11, item.createdAt ?? "", -1, SQLITE_TRANSIENT)
                 sqlite3_bind_text(statement, 12, item.isSync ?? "", -1, SQLITE_TRANSIENT)
                 
-                // Bind nested attributes
                 sqlite3_bind_text(statement, 13, item.attributes?.type ?? "", -1, SQLITE_TRANSIENT)
                 sqlite3_bind_text(statement, 14, item.attributes?.url ?? "", -1, SQLITE_TRANSIENT)
                 
-                // Execute the statement
                 if sqlite3_step(statement) != SQLITE_DONE {
                     let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
                     print("Error inserting SalesOrderLineItem: \(errorMsg)")
                     
-                    // Rollback the transaction and return an error
                     sqlite3_exec(Database.databaseConnection, "ROLLBACK", nil, nil, nil)
                     completion(false, errorMsg)
                     sqlite3_finalize(statement)
                     return
                 }
                 
-                // Reset the statement for the next item
                 sqlite3_reset(statement)
             }
             
-            // Commit the transaction
             if sqlite3_exec(Database.databaseConnection, "COMMIT", nil, nil, nil) != SQLITE_OK {
                 let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
                 print("Error committing transaction: \(errorMsg)")
                 completion(false, errorMsg)
                 return
             }
-            
             print("All SalesOrderLineItems inserted successfully")
             completion(true, nil)
         } else {
@@ -109,16 +99,14 @@ class SalesOrderLineItemsTable: Database {
             print("Error preparing statement: \(errorMsg)")
             completion(false, errorMsg)
         }
-        
         sqlite3_finalize(statement)
     }
     
     func getSalesOrderLineItems(completion: @escaping ([SalesOrderLineItems]?, String?) -> Void) {
         let selectQuery = "SELECT * FROM SalesOrderLineItemsTable;"
         var statement: OpaquePointer?
-
         var salesOrderLineItems: [SalesOrderLineItems] = []
-
+        
         if sqlite3_prepare_v2(Database.databaseConnection, selectQuery, -1, &statement, nil) == SQLITE_OK {
             while sqlite3_step(statement) == SQLITE_ROW {
                 let localId: Int? = sqlite3_column_type(statement, 0) != SQLITE_NULL ? Int(sqlite3_column_int(statement, 0)) : nil
@@ -136,11 +124,9 @@ class SalesOrderLineItemsTable: Database {
                 let isSync = sqlite3_column_text(statement, 12).flatMap { String(cString: $0) }
                 let attributesType = sqlite3_column_text(statement, 13).flatMap { String(cString: $0) }
                 let attributesUrl = sqlite3_column_text(statement, 14).flatMap { String(cString: $0) }
-
-                // Create Attributes instance
+                
                 let attributes = SalesOrderLineItems.Attributes(type: attributesType, url: attributesUrl)
-
-                // Create SalesOrderLineItems instance
+                
                 let item = SalesOrderLineItems(
                     localId: localId,
                     External_Id__c: externalId,
@@ -157,10 +143,10 @@ class SalesOrderLineItemsTable: Database {
                     isSync: isSync,
                     attributes: attributes
                 )
-
+                
                 salesOrderLineItems.append(item)
             }
-
+            
             sqlite3_finalize(statement)
             completion(salesOrderLineItems, nil)
         } else {
@@ -174,7 +160,7 @@ class SalesOrderLineItemsTable: Database {
         let query = "SELECT * FROM SalesOrderLineItemsTable WHERE isSync = '0'"
         var statement: OpaquePointer?
         var resultArray: [SalesOrderLineItems] = []
-
+        
         if sqlite3_prepare_v2(Database.databaseConnection, query, -1, &statement, nil) == SQLITE_OK {
             while sqlite3_step(statement) == SQLITE_ROW {
                 let localId: Int? = sqlite3_column_type(statement, 0) != SQLITE_NULL ? Int(sqlite3_column_int(statement, 0)) : nil
@@ -192,9 +178,9 @@ class SalesOrderLineItemsTable: Database {
                 let isSync = sqlite3_column_text(statement, 12).flatMap { String(cString: $0) } ?? ""
                 let attributesType = sqlite3_column_text(statement, 13).flatMap { String(cString: $0) }
                 let attributesUrl = sqlite3_column_text(statement, 14).flatMap { String(cString: $0) }
-
+                
                 let attributes = SalesOrderLineItems.Attributes(type: attributesType, url: attributesUrl)
-
+                
                 let item = SalesOrderLineItems(
                     localId: localId,
                     External_Id__c: externalId,
@@ -219,33 +205,12 @@ class SalesOrderLineItemsTable: Database {
         }
         return resultArray
     }
-
+    
     func updateSyncStatusForMultipleLocalIds(localIds: [Int]) {
         for localId in localIds {
             updateSyncStatus(localId: localId)
         }
     }
-
-//    func updateSyncStatus(forLocalId localId: Int) {
-//        let query = "UPDATE SalesOrderLineItemsTable SET isSync = '1' WHERE localId = ?"
-//        var statement: OpaquePointer?
-//
-//        if sqlite3_prepare_v2(Database.databaseConnection, query, -1, &statement, nil) == SQLITE_OK {
-//            sqlite3_bind_int(statement, 1, Int32(localId))
-//
-//            if sqlite3_step(statement) == SQLITE_DONE {
-//                print("Successfully updated isSync to 1 for localId: \(localId)")
-//            } else {
-//                let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
-//                print("Failed to update isSync for localId: \(localId): \(errorMsg)")
-//            }
-//
-//            sqlite3_finalize(statement)
-//        } else {
-//            print("Failed to prepare statement for updating isSync.")
-//        }
-//        sqlite3_finalize(statement)
-//    }
     
     func updateSyncStatus(localId: Int) {
         var statement: OpaquePointer?
@@ -263,6 +228,4 @@ class SalesOrderLineItemsTable: Database {
         }
         sqlite3_finalize(statement)
     }
-
-    
 }

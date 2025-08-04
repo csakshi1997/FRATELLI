@@ -12,7 +12,6 @@ class RQCRTable: Database {
     let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
     var statement: OpaquePointer? = nil
     
-    // Create the RQCR table
     func createRQCRTable() {
         let createTableQuery = """
             CREATE TABLE IF NOT EXISTS RQCRTable (
@@ -47,7 +46,6 @@ class RQCRTable: Database {
         }
     }
     
-    // Insert data into RQCRTable
     func saveRQCR(rqcr: RQCRModel, completion: @escaping (Bool, String?) -> Void) {
         var statement: OpaquePointer?
         let insertQuery = """
@@ -86,10 +84,10 @@ class RQCRTable: Database {
             if sqlite3_step(statement) != SQLITE_DONE {
                 let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
                 print("Error inserting RQCR: \(errorMsg)")
-                completion(false, errorMsg) // Call completion with failure
+                completion(false, errorMsg)
             } else {
                 print("RQCR inserted successfully")
-                completion(true, nil) // Call completion with success
+                completion(true, nil)
             }
         } else {
             let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
@@ -100,7 +98,6 @@ class RQCRTable: Database {
         sqlite3_finalize(statement)
     }
     
-    // Get all RQCR records
     func getRQCRs() -> [RQCRModel] {
         var resultArray = [RQCRModel]()
         var rqcr: RQCRModel?
@@ -147,7 +144,6 @@ class RQCRTable: Database {
         let query = "SELECT * FROM RQCRTable WHERE isSync = '0'"
         if sqlite3_prepare_v2(Database.databaseConnection, query, -1, &statement, nil) == SQLITE_OK {
             while sqlite3_step(statement) == SQLITE_ROW {
-                // Initialize the model properties from the SQLite query results
                 rqcr = RQCRModel(
                     localId: Int(sqlite3_column_int(statement, 0)),
                     externalId: String(cString: sqlite3_column_text(statement, 1)),
@@ -175,7 +171,6 @@ class RQCRTable: Database {
                     isSync: String(cString: sqlite3_column_text(statement, 23))
                 )
                 
-                // Append the populated model to the result array
                 resultArray.append(rqcr ?? RQCRModel(batchNo: "", brandName: "", canBottle: "", complaint: "", concernDetails: "", createdById: "", createdDate: "", dateOfGrievances: "", debitNoteCost: "", defectedQuantity: 0, locationDetails: "", manufacturingDate: "", particularBrandClosingStockReceived: "", remark: "", stockDetails: "", regionalSalesPerson: "", territorySalesPersonInCharge: ""))
             }
             sqlite3_finalize(statement)
@@ -204,5 +199,4 @@ class RQCRTable: Database {
         }
         sqlite3_finalize(statement)
     }
-
 }

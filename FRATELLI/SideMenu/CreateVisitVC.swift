@@ -138,6 +138,7 @@ class CreateVisitVC: UIViewController {
         if !validateFields() {
             return
         }
+        print("Account idd for create visist \(outletId)")
         outletData = outletsTable.getOutletData(forAccountId: outletId)
         let attributes = Visit.Attributes(type: "Visits__c", url: "")
         let account = Visit.Account(classification: outletData?.classification ?? "", id: "", name: outletData?.name ?? "", ownerId: "", subChannel: outletData?.subChannel ?? "")

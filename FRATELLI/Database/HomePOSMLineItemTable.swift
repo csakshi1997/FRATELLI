@@ -35,20 +35,18 @@ class HomePOSMLineItemTable: Database {
             INSERT INTO HomePOSMLineItemTable (External_Id__C, PosmItemId, POSM_Asset_name__c, Quantity__c, OwnerId, isSync, createdAt)
             VALUES (?, ?, ?, ?, ?, ?, ?)
         """
-
+        
         var statement: OpaquePointer?
-
-        // Start a transaction for batch insertion
+        
         if sqlite3_exec(Database.databaseConnection, "BEGIN TRANSACTION", nil, nil, nil) != SQLITE_OK {
             let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
             print("Error beginning transaction: \(errorMsg)")
             completion(false, errorMsg)
             return
         }
-
+        
         if sqlite3_prepare_v2(Database.databaseConnection, insertQuery, -1, &statement, nil) == SQLITE_OK {
             for item in items {
-                // Bind values for each item
                 sqlite3_bind_text(statement, 1, item.External_Id__C ?? "", -1, SQLITE_TRANSIENT)
                 sqlite3_bind_text(statement, 2, item.PosmItemId ?? "", -1, SQLITE_TRANSIENT)
                 sqlite3_bind_text(statement, 3, item.POSM_Asset_name__c ?? "", -1, SQLITE_TRANSIENT)
@@ -56,31 +54,26 @@ class HomePOSMLineItemTable: Database {
                 sqlite3_bind_text(statement, 5, item.OwnerId ?? "", -1, SQLITE_TRANSIENT)
                 sqlite3_bind_text(statement, 6, item.isSync ?? "", -1, SQLITE_TRANSIENT)
                 sqlite3_bind_text(statement, 7, item.createdAt ?? "", -1, SQLITE_TRANSIENT)
-
-                // Execute the statement
+                
                 if sqlite3_step(statement) != SQLITE_DONE {
                     let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
                     print("Error inserting HomePOSMLineItem: \(errorMsg)")
-
-                    // Rollback the transaction and return error
+                    
                     sqlite3_exec(Database.databaseConnection, "ROLLBACK", nil, nil, nil)
                     completion(false, errorMsg)
                     sqlite3_finalize(statement)
                     return
                 }
-
-                // Reset the statement for the next item
                 sqlite3_reset(statement)
             }
-
-            // Commit the transaction
+            
             if sqlite3_exec(Database.databaseConnection, "COMMIT", nil, nil, nil) != SQLITE_OK {
                 let errorMsg = String(cString: sqlite3_errmsg(Database.databaseConnection))
                 print("Error committing transaction: \(errorMsg)")
                 completion(false, errorMsg)
                 return
             }
-
+            
             print("All HomePOSMLineItems inserted successfully")
             completion(true, nil)
         } else {
@@ -88,7 +81,7 @@ class HomePOSMLineItemTable: Database {
             print("Error preparing statement: \(errorMsg)")
             completion(false, errorMsg)
         }
-
+        
         sqlite3_finalize(statement)
     }
     
@@ -96,7 +89,7 @@ class HomePOSMLineItemTable: Database {
         var resultArray = [HomePOSMLineItemModel]()
         var statement: OpaquePointer?
         let query = "SELECT * FROM HomePOSMLineItemTable"
-
+        
         if sqlite3_prepare_v2(Database.databaseConnection, query, -1, &statement, nil) == SQLITE_OK {
             while sqlite3_step(statement) == SQLITE_ROW {
                 var item = HomePOSMLineItemModel()

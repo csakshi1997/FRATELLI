@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Photos
 
 class SyncDownOperations {
     let webRequest = BaseWebService()
@@ -24,12 +25,16 @@ class SyncDownOperations {
     let addNewTaskTable = AddNewTaskTable()
     let visitsTable = VisitsTable()
     let skipTable = SkipTable()
+    let otherActivityTable = OtherActivityTable()
     let salesOrderTable = SalesOrderTable()
     let salesOrderLineItemsTable = SalesOrderLineItemsTable()
+    let visibilityServerTable = VisibilityServerTable()
+    let assetRequisitionServerTable = AssetRequisitionServerTable()
     var completionhandler: (String) -> Void = {_ in }
     var customDateFormatter = CustomDateFormatter()
     var appVersionOperation = AppVersionOperation()
     var qCROperation = QCROperation()
+    let uploader = UploadFileToServer()
     
     func syncInDataForAccount() {
         var outlets = [Outlet]()
@@ -916,34 +921,17 @@ class SyncDownOperations {
                         errorBody: payload,
                         Issue_DateTime__c: issueDateTime
                     ) {
-                        self.syncInDataForVisibility()
+                        self.syncInDataForOtherActivity()
                     }
                 } else {
                     print("Successfully synced Skip tasks:")
-                    self.syncInDataForVisibility()
+                    self.syncInDataForOtherActivity()
                 }
             }
         } else {
-            self.syncInDataForVisibility()
+            self.syncInDataForOtherActivity()
         }
     }
-    
-//    func executeSyncForSkip(localId: [Int], param: [String : Any], syncType: String, syncName: String, outerClosure: @escaping ((String?, [String: Any]?, ResponseStatus) -> ())) {
-//        webRequest.processRequestUsingPostMethod(url: "\(apiUrl)\(endPoint.SEND_SKIP)", parameters: param, showLoader: true, contentType: .json) { error, val, result, statusCode in
-//            print("Post syncType Table Data ")
-//            guard let responseData = result as? [String: Any] else {
-//                let errorMessage = "Invalid response format"
-//                outerClosure(errorMessage, nil, Utility.getStatus(responseCode: statusCode ?? 0))
-//                return
-//            }
-//            if let results = responseData["results"] as? [[String: Any]] {
-//                self.skipTable.updateSyncStatusForMultipleSkipIds(localIds: localId)
-//                self.syncInDataForVisibility()
-//            } else {
-//                let errorMessage = "No records found in the response"
-//            }
-//        }
-//    }
     
     func executeSyncForSkip(localId: [Int], param: [String : Any], syncType: String, syncName: String, outerClosure: @escaping ((String?, [String: Any]?, ResponseStatus) -> ())) {
         webRequest.processRequestUsingPostMethod(url: "\(apiUrl)\(endPoint.SEND_SKIP)", parameters: param, showLoader: true, contentType: .json) { error, val, result, statusCode in
@@ -975,7 +963,7 @@ class SyncDownOperations {
                     outerClosure(fullErrorMessage, responseData, Utility.getStatus(responseCode: statusCode ?? 0))
                 } else {
                     self.skipTable.updateSyncStatusForMultipleSkipIds(localIds: localId)
-                    self.syncInDataForVisibility()
+                    self.syncInDataForOtherActivity()
                 }
 
             } else {
@@ -985,40 +973,430 @@ class SyncDownOperations {
         }
     }
     
+    func syncInDataForOtherActivity() {
+        var otherActivityModel = [OtherActivityModel]()
+        var localIds = [Int]()
+        var recordsArray = [[String: Any]]()
+        otherActivityModel = otherActivityTable.getOtherActivitiesWhereIsSyncZero()
+        if !(otherActivityModel.isEmpty) {
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+            for (index, otherActivityModelData) in otherActivityModel.enumerated() {
+                let otherActivityModelDataPayload: [String: Any] = [
+                    "checkedOut": otherActivityModelData.checkedOut ?? EMPTY,
+                    "checkedIn": otherActivityModelData.checkedIn ?? EMPTY,
+                    "ownerId": Defaults.userId ?? EMPTY,
+                    "actualStart": otherActivityModelData.actualStart ?? EMPTY,
+                    "actualEnd": otherActivityModelData.actualEnd ?? EMPTY,
+                    "checkedInLat": otherActivityModelData.checkedInLat ?? EMPTY,
+                    "checkedInLong": otherActivityModelData.checkedInLong ?? EMPTY,
+                    "checkedOutLat": otherActivityModelData.checkedOutLat ?? EMPTY,
+                    "checkedOutLong": otherActivityModelData.checkedOutLong ?? EMPTY,
+                    "outletCreation": "Other Activity",
+                    "name": otherActivityModelData.name ?? EMPTY,
+                    "remark": otherActivityModelData.remark ?? EMPTY,
+                    "Device_Version__c": self.appVersionOperation.getCurrentAppVersion() ?? "",
+                    "deviceType": "iOS",
+                    "deviceName": UIDevice.current.name,
+                    "attributes": [
+                        "referenceId": "ref\(index)",
+                        "type": "Visits__c"
+                    ]
+                ]
+                recordsArray.append(otherActivityModelDataPayload)
+                localIds.append(otherActivityModelData.localId ?? 0)
+            }
+            let payload: [String: Any] = [
+                "records": recordsArray
+            ]
+            print("payload SEND_OTHER_ACTIVITIES tasks: \(payload)")
+            executeSyncForOtherActivity(localId: localIds, param: payload, syncType: "SEND_OTHER_ACTIVITIES", syncName: "SEND_OTHER_ACTIVITIES Sync") { error, response, status in
+                if let error = error {
+                    print("❌ Error syncing SEND_OTHER_ACTIVITIES: \(error)")
+                    print("📦 Payload that caused error: \(payload)")
+                    let issueDateTime = self.dateFormatter.string(from: Date())
+                    
+                    self.reportSyncError(
+                        objectName: "Visits__c",
+                        errorMessage: error,
+                        errorBody: payload,
+                        Issue_DateTime__c: issueDateTime
+                    ) {
+                        self.syncInDataForVisibility()
+                    }
+                } else {
+                    print("Successfully synced SEND_OTHER_ACTIVITIES tasks:")
+                    self.syncInDataForVisibility()
+                }
+            }
+        } else {
+            self.syncInDataForVisibility()
+        }
+    }
+    
+    func executeSyncForOtherActivity(localId: [Int], param: [String : Any], syncType: String, syncName: String, outerClosure: @escaping ((String?, [String: Any]?, ResponseStatus) -> ())) {
+        webRequest.processRequestUsingPostMethod(url: "\(apiUrl)\(endPoint.SEND_OTHER_ACTIVITIES)", parameters: param, showLoader: true, contentType: .json) { error, val, result, statusCode in
+            print("Post SEND_OTHER_ACTIVITIES Table Data ")
+
+            guard let responseData = result as? [String: Any] else {
+                let errorMessage = "Invalid response format"
+                outerClosure(errorMessage, nil, Utility.getStatus(responseCode: statusCode ?? 0))
+                return
+            }
+
+            if let results = responseData["results"] as? [[String: Any]] {
+                var hasRecordLevelError = false
+                var aggregatedErrorMessages = [String]()
+
+                for record in results {
+                    if let errors = record["errors"] as? [[String: Any]], !errors.isEmpty {
+                        hasRecordLevelError = true
+                        for errorObj in errors {
+                            if let message = errorObj["message"] as? String {
+                                aggregatedErrorMessages.append(message)
+                            }
+                        }
+                    }
+                }
+
+                if hasRecordLevelError {
+                    let fullErrorMessage = aggregatedErrorMessages.joined(separator: "; ")
+                    outerClosure(fullErrorMessage, responseData, Utility.getStatus(responseCode: statusCode ?? 0))
+                } else {
+                    self.otherActivityTable.updateActivitySyncStatusForMultipleIds(localIds: localId)
+                    self.syncInDataForVisibility()
+                }
+
+            } else {
+                let errorMessage = "No records found in the response"
+                outerClosure(errorMessage, responseData, Utility.getStatus(responseCode: statusCode ?? 0))
+            }
+        }
+    }
+//    func syncInDataForVisibility() {
+//        let allVisibilityModel = visibilityServerTable.getUnsyncedRecords()
+//        guard !allVisibilityModel.isEmpty else {
+//            self.syncInDataForVisits()
+//            return
+//        }
+//        func syncNext(index: Int) {
+//            if index >= allVisibilityModel.count {
+//                print("✅ All visibility items synced")
+//                self.syncInDataForVisits()
+//                return
+//            }
+//            
+//            let item = allVisibilityModel[index]
+//            let localId = Int(item.localId ?? 0)
+//            let fileName = item.fileName ?? ""
+//            let fileURL = getDocumentsDirectory().appendingPathComponent(fileName)
+//            
+//            guard FileManager.default.fileExists(atPath: fileURL.path) else {
+//                print("❌ File not found for LocalId \(localId): \(fileName)")
+//                syncNext(index: index + 1)
+//                return
+//            }
+//            
+//            do {
+//                let fileData = try Data(contentsOf: fileURL)
+//                
+//                let mimeType: String
+//                if fileName.lowercased().hasSuffix(".pdf") {
+//                    mimeType = "application/pdf"
+//                } else if fileName.lowercased().hasSuffix(".jpg") || fileName.lowercased().hasSuffix(".jpeg") {
+//                    mimeType = "image/jpeg"
+//                } else if fileName.lowercased().hasSuffix(".png") {
+//                    mimeType = "image/png"
+//                } else {
+//                    mimeType = "application/octet-stream"
+//                }
+//                
+//                let payload: [String: Any] = [
+//                    "user_id": item.userId ?? EMPTY,
+//                    "file": fileName
+//                ]
+//                print("⬆️ Uploading \(index + 1)/\(allVisibilityModel.count): \(fileName)")
+//                
+//                UploadFileToServer().uploadFileToServer(
+//                    userId: item.userId ?? EMPTY,
+//                    fileData: fileData,
+//                    fileName: fileName,
+//                    mimeType: mimeType
+//                ) { success, responseURL in
+//                    DispatchQueue.main.async {
+//                        if success {
+//                            print("✅ Uploaded LocalId: \(localId)")
+//                            self.visibilityServerTable.updateSyncStatus(forLocalId: localId)
+//                        } else {
+//                            print("❌ Failed to upload LocalId: \(localId)")
+//                        }
+//                        syncNext(index: index + 1)
+//                    }
+//                }
+//                
+//            } catch {
+//                print("❌ Error reading file for LocalId \(localId): \(error.localizedDescription)")
+//                syncNext(index: index + 1)
+//            }
+//        }
+//        syncNext(index: 0)
+//    }
+    
     func syncInDataForVisibility() {
-        let allVisibilityModel = allVisibilityTable.getAllVisibilityItemsWhereIsSyncZero()
+        let allVisibilityModel = visibilityServerTable.getUnsyncedRecords()
+        guard !allVisibilityModel.isEmpty else {
+            self.syncInDataForAssetVisibility()
+            return
+        }
+
+        func syncNext(index: Int) {
+            if index >= allVisibilityModel.count {
+                print("✅ All visibility items synced")
+                self.syncInDataForAssetVisibility()
+                return
+            }
+
+            let item = allVisibilityModel[index]
+            let localId = Int(item.localId ?? 0)
+            let fileName = item.fileName ?? ""
+            let fileURL = getDocumentsDirectory().appendingPathComponent(fileName)
+
+            guard FileManager.default.fileExists(atPath: fileURL.path) else {
+                print("❌ File not found for LocalId \(localId): \(fileName)")
+                syncNext(index: index + 1)  // Continue to next
+                return
+            }
+
+            do {
+                let fileData = try Data(contentsOf: fileURL)
+
+                let mimeType: String
+                if fileName.lowercased().hasSuffix(".pdf") {
+                    mimeType = "application/pdf"
+                } else if fileName.lowercased().hasSuffix(".jpg") || fileName.lowercased().hasSuffix(".jpeg") {
+                    mimeType = "image/jpeg"
+                } else if fileName.lowercased().hasSuffix(".png") {
+                    mimeType = "image/png"
+                } else {
+                    mimeType = "application/octet-stream"
+                }
+
+                UploadFileToServer().uploadFileToServer(
+                    userId: item.userId ?? EMPTY,
+                    fileData: fileData,
+                    fileName: fileName,
+                    mimeType: mimeType
+                ) { success, responseURL in
+                    DispatchQueue.main.async {
+                        guard success, let publicUrl = responseURL else {
+                            print("❌ Upload failed for LocalId: \(localId)")
+                            syncNext(index: index + 1)
+                            return
+                        }
+
+                        self.visibilityServerTable.updatePublicURL(forLocalId: localId, url: publicUrl)
+
+                        var updatedItem = item
+                        updatedItem.imagePublicUrl = publicUrl
+                        let payload = self.buildSalesforceImagePayload(from: updatedItem)
+
+                        self.sendToSalesforce(payload: payload) { sfSuccess in
+                            if sfSuccess {
+                                self.visibilityServerTable.updateSyncStatus(forLocalId: localId)
+                                print("✅ Synced to Salesforce for LocalId: \(localId)")
+                            } else {
+                                print("❌ Salesforce sync failed for LocalId: \(localId)")
+                            }
+                            syncNext(index: index + 1)  // Proceed to next
+                        }
+                    }
+                }
+
+            } catch {
+                print("❌ File read error for LocalId \(localId): \(error.localizedDescription)")
+                syncNext(index: index + 1)
+            }
+        }
+
+        syncNext(index: 0)  // Start the sync chain
+    }
+
+    func buildSalesforceImagePayload(from model: VisibilityServerModel) -> [String: Any] {
+        let attributes: [String: Any] = [
+            "referenceId": "ref1",
+            "type": "Image_Visibility__c"
+        ]
+        
+        let record: [String: Any] = [
+            "attributes": attributes,
+            "OwnerId": model.userId ?? "",
+            "Asset_name__c": "Asset Visibility.\(model.assetName ?? "")",
+            "External_Id__c": model.externalId ?? "",
+            "Dealer_Distributor_CORP__c": model.dealerDistributorCorpId ?? "",
+            "Device_Name__c": model.deviceName ?? "",
+            "Device_Version__c": model.deviceVersion ?? "",
+            "Device_Type__c": model.deviceType ?? "",
+            "Image_Url__c": model.imagePublicUrl ?? "",
+            "Visit_Order__c": model.visitOrderId ?? ""
+        ]
+        print("VisibilityServerModel VisibilityServerModel \(record)")
+        return ["records": [record]]
+       
+    }
+    
+    func sendToSalesforce(payload: [String: Any], completion: @escaping (Bool) -> Void) {
+        print("payloaddddddd \(payload)")
+        print("urlllllll \(apiUrl)\(endPoint.SALESFORCE_IMAGE_UPLOAD)")
+        webRequest.processRequestUsingPostMethod(
+            url: "\(apiUrl)\(endPoint.SALESFORCE_IMAGE_UPLOAD)",
+            parameters: payload,
+            showLoader: true,
+            contentType: .json
+        ) { error, val, result, statusCode in
+
+            guard let responseData = result as? [String: Any] else {
+                print("❌ Invalid Salesforce response")
+                completion(false)
+                return
+            }
+
+            if let records = responseData["records"] as? [[String: Any]] {
+                print("✅ Salesforce responded with \(records.count) records")
+                completion(true)
+            } else {
+                print("⚠️ No 'records' key found in Salesforce response")
+                completion(false)
+            }
+        }
+    }
+    
+    func syncInDataForAssetVisibility() {
+        let allVisibilityModel = assetRequisitionServerTable.getUnsyncedRecords()
         guard !allVisibilityModel.isEmpty else {
             self.syncInDataForVisits()
             return
         }
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+
         func syncNext(index: Int) {
             if index >= allVisibilityModel.count {
                 print("✅ All visibility items synced")
                 self.syncInDataForVisits()
                 return
             }
+
             let item = allVisibilityModel[index]
-            let localId = item.LocalId ?? 0
-            
-            let payload: [String: Any] = [
-                "Title": "OutletVisibility-\(item.assetName ?? "")-000\(index)",
-                "AccountId": item.outletId ?? "",
-                "PathOnClient": item.assetItemImg ?? "",
-                "FileDataHex": item.hexString ?? ""
-            ]
-            print("⬆️ Uploading image \(index + 1)/\(allVisibilityModel.count): \(payload)")
-            qCROperation.executeUploadImage(localId: localId, param: payload) { error, response, statusCode in
-                if let error = error {
-                    print("❌ Error uploading LocalId \(localId): \(error)")
+            let localId = Int(item.localId ?? 0)
+            let fileName = item.fileName ?? ""
+            let fileURL = getDocumentsDirectory().appendingPathComponent(fileName)
+
+            guard FileManager.default.fileExists(atPath: fileURL.path) else {
+                print("❌ File not found for LocalId \(localId): \(fileName)")
+                syncNext(index: index + 1)  // Continue to next
+                return
+            }
+
+            do {
+                let fileData = try Data(contentsOf: fileURL)
+
+                let mimeType: String
+                if fileName.lowercased().hasSuffix(".pdf") {
+                    mimeType = "application/pdf"
+                } else if fileName.lowercased().hasSuffix(".jpg") || fileName.lowercased().hasSuffix(".jpeg") {
+                    mimeType = "image/jpeg"
+                } else if fileName.lowercased().hasSuffix(".png") {
+                    mimeType = "image/png"
                 } else {
-                    print("✅ Uploaded LocalId \(localId)")
-                    self.allVisibilityTable.updateSyncStatusForAllVisibilityItem(localId: localId)
+                    mimeType = "application/octet-stream"
                 }
+
+                UploadFileToServer().uploadFileToServer(
+                    userId: item.userId ?? EMPTY,
+                    fileData: fileData,
+                    fileName: fileName,
+                    mimeType: mimeType
+                ) { success, responseURL in
+                    DispatchQueue.main.async {
+                        guard success, let publicUrl = responseURL else {
+                            print("❌ Upload failed for LocalId: \(localId)")
+                            syncNext(index: index + 1)
+                            return
+                        }
+
+                        self.assetRequisitionServerTable.updatePublicURL(forLocalId: localId, url: publicUrl)
+
+                        var updatedItem = item
+                        updatedItem.imagePublicUrl = publicUrl
+                        let payload = self.buildSalesforceImagePayloadForAsset(from: updatedItem)
+
+                        self.sendAssetToSalesforce(payload: payload) { sfSuccess in
+                            if sfSuccess {
+                                self.assetRequisitionServerTable.updateSyncStatus(forLocalId: localId)
+                                print("✅ Synced to Salesforce for LocalId: \(localId)")
+                            } else {
+                                print("❌ Salesforce sync failed for LocalId: \(localId)")
+                            }
+                            syncNext(index: index + 1)  // Proceed to next
+                        }
+                    }
+                }
+
+            } catch {
+                print("❌ File read error for LocalId \(localId): \(error.localizedDescription)")
                 syncNext(index: index + 1)
             }
         }
-        syncNext(index: 0)
+
+        syncNext(index: 0) 
+    }
+    
+    func buildSalesforceImagePayloadForAsset(from model: AssetRequisitionServerModel) -> [String: Any] {
+        let attributes: [String: Any] = [
+            "referenceId": "ref1",
+            "type": "Image_Visibility__c"
+        ]
+        
+        let record: [String: Any] = [
+            "attributes": attributes,
+            "OwnerId": model.userId ?? "",
+            "Asset_name__c": "Asset Requisition.\(model.assetName ?? "")",
+            "External_Id__c": model.externalId ?? "",
+            "Dealer_Distributor_CORP__c": model.dealerDistributorCorpId ?? "",
+            "Device_Name__c": model.deviceName ?? "",
+            "Device_Version__c": model.deviceVersion ?? "",
+            "Device_Type__c": model.deviceType ?? "",
+            "Image_Url__c": model.imagePublicUrl ?? "",
+            "Visit_Order__c": model.visitOrderId ?? ""
+        ]
+        print("AssetRequisitionServerModel AssetRequisitionServerModel \(record)")
+        return ["records": [record]]
+       
+    }
+    
+    func sendAssetToSalesforce(payload: [String: Any], completion: @escaping (Bool) -> Void) {
+        webRequest.processRequestUsingPostMethod(
+            url: "\(apiUrl)\(endPoint.SALESFORCE_IMAGE_UPLOAD)",
+            parameters: payload,
+            showLoader: true,
+            contentType: .json
+        ) { error, val, result, statusCode in
+
+            guard let responseData = result as? [String: Any] else {
+                print("❌ Invalid Salesforce response")
+                completion(false)
+                return
+            }
+
+            if let records = responseData["records"] as? [[String: Any]] {
+                print("✅ Salesforce responded with \(records.count) records")
+                completion(true)
+            } else {
+                print("⚠️ No 'records' key found in Salesforce response")
+                completion(false)
+            }
+        }
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     }
     
     func syncInDataForVisits() {
@@ -1208,13 +1586,12 @@ class SyncDownOperations {
             "User__c": Defaults.userId ?? "",
             "Device_Name__c": UIDevice.current.name,
             "Error_Message__c": errorMessage,
-            "Error_Body__c": errorBodyString,  
+            "Error_Body__c": errorBodyString,
             "Issue_DateTime__c": Issue_DateTime__c,
             "Object__c": objectName,
             "Device_Version__c": Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown",
             "Device_Type__c": "iOS"
         ]
-        
         let finalPayload: [String: Any] = [
             "records": [errorLog]
         ]

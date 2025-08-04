@@ -12,7 +12,6 @@ class POSMRequisitionTable: Database {
     let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
     var statement: OpaquePointer? = nil
     
-    // Create POSMRequisitionTable
     func createPOSMRequisitionTable() {
         let createTableQuery = """
             CREATE TABLE IF NOT EXISTS POSMRequisitionTable (
@@ -30,7 +29,6 @@ class POSMRequisitionTable: Database {
         }
     }
     
-    // Insert data into POSMRequisitionTable
     func savePOSMRequisition(model: POSMRequisitionModel, completion: @escaping (Bool, String?) -> Void) {
         var statement: OpaquePointer?
         let insertQuery = "INSERT INTO POSMRequisitionTable (IsActive, Label, Value, attributesType, attributesUrl, isSync) VALUES (?, ?, ?, ?, ?, ?)"

@@ -22,8 +22,6 @@ var chcekInDate: String = ""
 var chcekintime: String = ""
 var savedCurrentDate: String = ""
 var savedCurrentTime: String = ""
-var Location_Proximity__c: Int = 0
-var Tracking_Interval_Sec__c: Int = 0
 var Contact_Person_Name__c: String = ""
 var Contact_Phone_No__c: String = ""
 

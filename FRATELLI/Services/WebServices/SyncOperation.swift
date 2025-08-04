@@ -66,24 +66,43 @@ class SyncOperation {
                         dispatchGroup.leave()
                     }
                 }
+//            case SyncEnum.products.rawValue:
+//                for record in records {
+//                    dispatchGroup.enter()
+//                    if let product = self.parseProduct(record: record) {
+//                        let productsTable = ProductsTable()
+//                        productsTable.saveProduct(product: product) { success, errorMessage in
+//                            if success {
+//                                print("Product \(product.id) saved successfully.")
+//                            } else {
+//                                print("Failed to save product \(product.id): \(errorMessage ?? "Unknown error")")
+//                            }
+//                            dispatchGroup.leave()
+//                        }
+//                    } else {
+//                        print("Failed to parse product for record: \(record)")
+//                        dispatchGroup.leave()
+//                    }
+//                }
+                
             case SyncEnum.products.rawValue:
                 for record in records {
                     dispatchGroup.enter()
-                    if let product = self.parseProduct(record: record) {
-                        let productsTable = ProductsTable()
-                        productsTable.saveProduct(product: product) { success, errorMessage in
-                            if success {
-                                print("Product \(product.id) saved successfully.")
-                            } else {
-                                print("Failed to save product \(product.id): \(errorMessage ?? "Unknown error")")
-                            }
-                            dispatchGroup.leave()
+                    print("hello hello \(record)")
+                    
+                    let product = self.parseProduct(record: record)
+                    let productsTable = ProductsTable()
+                    productsTable.saveProduct(product: product) { success, errorMessage in
+                        if success {
+                            print("✅ Product \(product.id ?? "nil") saved successfully.")
+                        } else {
+                            print("hello hello hello hello hello  \(record)")
+                            print("🔴 Failed to save product \(product.id ?? "nil"): \(errorMessage ?? "Unknown error")")
                         }
-                    } else {
-                        print("Failed to parse product for record: \(record)")
                         dispatchGroup.leave()
                     }
                 }
+                
                 
             case SyncEnum.outlets.rawValue:
                 for record in records {
@@ -110,14 +129,14 @@ class SyncOperation {
                         let distributorAccountsTable = DistributorAccountsTable()
                         distributorAccountsTable.saveDistribitorOutlet(outlet: outlet) { success, errorMessage in
                             if success {
-                                print("Outlet \(outlet.id ?? "") saved successfully.")
+                                print("distributorAccount \(outlet.id ?? "") saved successfully.")
                             } else {
-                                print("Failed to save outlet \(outlet.id ?? ""): \(errorMessage ?? "Unknown error")")
+                                print("Failed to save distributorAccount \(outlet.id ?? ""): \(errorMessage ?? "Unknown error")")
                             }
                             dispatchGroup.leave()
                         }
                     } else {
-                        print("Failed to parse outlet for record: \(record)")
+                        print("Failed to parse outdistributorAccountlet for record: \(record)")
                         dispatchGroup.leave()
                     }
                 }
@@ -460,103 +479,163 @@ class SyncOperation {
     
     
     
-    func parseProduct(record: [String: Any]) -> Product? {
-        guard let abbreviation = record["Abbreviation__c"] as? String else {
-            return nil
+//    func parseProduct(record: [String: Any]) -> Product? {
+//        guard let abbreviation = record["Abbreviation__c"] as? String else {
+//            return nil
+//        }
+//        guard let brandCode = record["Brand_Code__c"] as? String else {
+//            return nil
+//        }
+//        guard let category = record["Category__c"] as? String else {
+//            return nil
+//        }
+//        guard let conversionRatio = record["Conversion_Ratio__c"] as? Int else {
+//            return nil
+//        }
+//        guard let createdDate = record["CreatedDate"] as? String else {
+//            return nil
+//        }
+//        guard let createdDate = record["Id"] as? String else {
+//            return nil
+//        }
+//        guard let id = record["Id"] as? String else {
+//            return nil
+//        }
+//        guard let isDeleted = record["IsDeleted"] as? Bool else {
+//            return nil
+//        }
+//        guard let itemType = record["Item_Type__c"] as? String else {
+//            return nil
+//        }
+//        guard let name = record["Name"] as? String else {
+//            return nil
+//        }
+//        guard let ownerId = record["OwnerId"] as? String else {
+//            return nil
+//        }
+//        guard let priority = record["Priority__c"] as? Int else {
+//            return nil
+//        }
+//        guard let productId = record["Product_ID__c"] as? String else {
+//            return nil
+//        }
+//        guard let sizeCode = record["Size_Code__c"] as? String else {
+//            return nil
+//        }
+//        guard let sizeInMl = record["Size_In_ML__c"] as? String else {
+//            return nil
+//        }
+//        guard let type = record["Type__c"] as? String else {
+//            return nil
+//        }
+//        
+//        let bottleCan = record["Bottle_CAN__c"] as? String
+//        let bottleSize = record["Bottle_Size__c"] as? String
+//        let gst = record["GST__c"] as? String
+//        let productCategory = record["Product_Category__c"] as? String
+//        let productCode = record["Product_Code__c"] as? String
+//        let productFamily = record["Product_Family__c"] as? String
+//        let productType = record["Product_Type__c"] as? String
+//        let isSync = "0"
+//        
+//        if let attributesDict = record["attributes"] as? [String: Any],
+//           let type = attributesDict["type"] as? String,
+//           let url = attributesDict["url"] as? String {
+//            let attributes = Product.Attributes(type: type, url: url)
+//            
+//            return Product(
+//                abbreviation: abbreviation,
+//                bottleCan: bottleCan,
+//                bottleSize: bottleSize,
+//                brandCode: brandCode,
+//                category: category,
+//                conversionRatio: conversionRatio,
+//                createdDate: createdDate,
+//                gst: gst,
+//                id: id,
+//                isDeleted: isDeleted,
+//                itemType: itemType,
+//                name: name,
+//                ownerId: ownerId,
+//                priority: priority,
+//                productCategory: productCategory,
+//                productCode: productCode,
+//                productFamily: productFamily,
+//                productId: productId,
+//                productType: productType,
+//                sizeCode: sizeCode,
+//                sizeInMl: Int(sizeInMl) ?? 0,
+//                type: type,
+//                attributes: attributes,
+//                isSync: isSync
+//            )
+//        }
+//        
+//        return nil
+//    }
+    
+    func parseProduct(record: [String: Any]) -> Product {
+        let abbreviation = record["Abbreviation__c"] as? String ?? ""
+        let bottleCan = record["Bottle_CAN__c"] as? String ?? ""
+        let bottleSize = record["Bottle_Size__c"] as? String ?? ""
+        let brandCode = record["Brand_Code__c"] as? String ?? ""
+        let category = record["Category__c"] as? String ?? ""
+        let conversionRatio = record["Conversion_Ratio__c"] as? Int ?? 0
+        let createdDate = record["CreatedDate"] as? String ?? ""
+        let gst = record["GST__c"] as? String ?? ""
+        let id = record["Id"] as? String ?? ""
+        let isDeleted = (record["IsDeleted"] as? Int ?? 0) == 1
+        let itemType = record["Item_Type__c"] as? String ?? ""
+        let name = record["Name"] as? String ?? ""
+        let ownerId = record["OwnerId"] as? String ?? ""
+        let priority = record["Priority__c"] as? Int ?? 0
+        let productCategory = record["Product_Category__c"] as? String ?? ""
+        let productCode = record["Product_Code__c"] as? String ?? ""
+        let productFamily = record["Product_Family__c"] as? String ?? ""
+        let productId = record["Product_ID__c"] as? String ?? ""
+        let productType = record["Product_Type__c"] as? String ?? ""
+        let sizeCode = record["Size_Code__c"] as? String ?? ""
+        let sizeInMl = record["Size_In_ML__c"] as? Int ?? 0
+        let type = record["Type__c"] as? String ?? ""
+
+        // Parse nested attributes
+        var attributes: Product.Attributes? = nil
+        if let attrDict = record["attributes"] as? [String: Any] {
+            let attrType = attrDict["type"] as? String ?? ""
+            let attrUrl = attrDict["url"] as? String ?? ""
+            attributes = Product.Attributes(type: attrType, url: attrUrl)
         }
-        guard let brandCode = record["Brand_Code__c"] as? String else {
-            return nil
-        }
-        guard let category = record["Category__c"] as? String else {
-            return nil
-        }
-        guard let conversionRatio = record["Conversion_Ratio__c"] as? Int else {
-            return nil
-        }
-        guard let createdDate = record["CreatedDate"] as? String else {
-            return nil
-        }
-        guard let createdDate = record["Id"] as? String else {
-            return nil
-        }
-        guard let id = record["Id"] as? String else {
-            return nil
-        }
-        guard let isDeleted = record["IsDeleted"] as? Bool else {
-            return nil
-        }
-        guard let itemType = record["Item_Type__c"] as? String else {
-            return nil
-        }
-        guard let name = record["Name"] as? String else {
-            return nil
-        }
-        guard let ownerId = record["OwnerId"] as? String else {
-            return nil
-        }
-        guard let priority = record["Priority__c"] as? Int else {
-            return nil
-        }
-        guard let productId = record["Product_ID__c"] as? String else {
-            return nil
-        }
-        guard let sizeCode = record["Size_Code__c"] as? String else {
-            return nil
-        }
-        guard let sizeInMl = record["Size_In_ML__c"] as? String else {
-            return nil
-        }
-        guard let type = record["Type__c"] as? String else {
-            return nil
-        }
-        
-        let bottleCan = record["Bottle_CAN__c"] as? String
-        let bottleSize = record["Bottle_Size__c"] as? String
-        let gst = record["GST__c"] as? String
-        let productCategory = record["Product_Category__c"] as? String
-        let productCode = record["Product_Code__c"] as? String
-        let productFamily = record["Product_Family__c"] as? String
-        let productType = record["Product_Type__c"] as? String
-        let isSync = "0"
-        
-        if let attributesDict = record["attributes"] as? [String: Any],
-           let type = attributesDict["type"] as? String,
-           let url = attributesDict["url"] as? String {
-            let attributes = Product.Attributes(type: type, url: url)
-            
-            return Product(
-                abbreviation: abbreviation,
-                bottleCan: bottleCan,
-                bottleSize: bottleSize,
-                brandCode: brandCode,
-                category: category,
-                conversionRatio: conversionRatio,
-                createdDate: createdDate,
-                gst: gst,
-                id: id,
-                isDeleted: isDeleted,
-                itemType: itemType,
-                name: name,
-                ownerId: ownerId,
-                priority: priority,
-                productCategory: productCategory,
-                productCode: productCode,
-                productFamily: productFamily,
-                productId: productId,
-                productType: productType,
-                sizeCode: sizeCode,
-                sizeInMl: Int(sizeInMl) ?? 0,
-                type: type,
-                attributes: attributes,
-                isSync: isSync
-            )
-        }
-        
-        return nil
+
+        return Product(
+            abbreviation: abbreviation,
+            bottleCan: bottleCan,
+            bottleSize: bottleSize,
+            brandCode: brandCode,
+            category: category,
+            conversionRatio: conversionRatio,
+            createdDate: createdDate,
+            gst: gst,
+            id: id,
+            isDeleted: isDeleted,
+            itemType: itemType,
+            name: name,
+            ownerId: ownerId,
+            priority: priority,
+            productCategory: productCategory,
+            productCode: productCode,
+            productFamily: productFamily,
+            productId: productId,
+            productType: productType,
+            sizeCode: sizeCode,
+            sizeInMl: sizeInMl,
+            type: type,
+            attributes: attributes,
+            isSync: ""
+        )
     }
     
     func parseOutlet(record: [String: Any]) -> Outlet? {
-        print(record)
+        print("parseOutlet \(record)")
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         let currentDateTime = dateFormatter.string(from: Date())
         let accountId = record["Account_ID__c"] as? String ?? ""
@@ -611,7 +690,10 @@ class SyncOperation {
         let zone = record["Zone__c"] as? String ?? ""
         let OwnerManager = record["Owner_Manager__c"] as? String ?? ""
         let isSync = "1"
+        let assetVisibility = record["Asset_Visibility__c"] as? String ?? ""
+        let currentMarketShare = (record["Current_Market_Share__c"] as? Double) ?? 0.0
         let createdAt = currentDateTime
+       
         
         let attributes = Outlet.Attributes(type: attributesType, url: attributesUrl)
         
@@ -667,7 +749,9 @@ class SyncOperation {
             attributes: attributes,
             isSync: isSync,
             checkIn: 0,
-            createdAt: createdAt
+            createdAt: createdAt,
+            Asset_Visibility__c: assetVisibility,
+            Current_Market_Share__c: "\(currentMarketShare)"
         )
     }
     

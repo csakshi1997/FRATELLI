@@ -221,7 +221,9 @@ class NewOutletVC: UIViewController {
             attributes: attributes,
             isSync: "0",
             checkIn: 0,
-            createdAt: customDateFormatter.getFormattedDateForAccount()
+            createdAt: customDateFormatter.getFormattedDateForAccount(),
+            Asset_Visibility__c: "",
+            Current_Market_Share__c: ""
         )
         outletsTable.saveOutlet(outlet: newOutlet) { success, error in
             if success {
