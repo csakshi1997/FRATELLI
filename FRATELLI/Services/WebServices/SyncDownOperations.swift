@@ -982,24 +982,43 @@ class SyncDownOperations {
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
             for (index, otherActivityModelData) in otherActivityModel.enumerated() {
                 let otherActivityModelDataPayload: [String: Any] = [
-                    "checkedOut": otherActivityModelData.checkedOut ?? EMPTY,
-                    "checkedIn": otherActivityModelData.checkedIn ?? EMPTY,
+//                    "checkedOut": otherActivityModelData.checkedOut ?? EMPTY,
+//                    "checkedIn": otherActivityModelData.checkedIn ?? EMPTY,
+//                    "ownerId": Defaults.userId ?? EMPTY,
+//                    "actualStart": otherActivityModelData.actualStart ?? EMPTY,
+//                    "actualEnd": otherActivityModelData.actualEnd ?? EMPTY,
+//                    "checkedInLat": otherActivityModelData.checkedInLat ?? EMPTY,
+//                    "checkedInLong": otherActivityModelData.checkedInLong ?? EMPTY,
+//                    "checkedOutLat": otherActivityModelData.checkedOutLat ?? EMPTY,
+//                    "checkedOutLong": otherActivityModelData.checkedOutLong ?? EMPTY,
+//                    "outletCreation": "Other Activity",
+//                    "name": otherActivityModelData.name ?? EMPTY,
+//                    "remark": otherActivityModelData.remark ?? EMPTY,
+//                    "Device_Version__c": self.appVersionOperation.getCurrentAppVersion() ?? "",
+//                    "deviceType": "iOS",
+//                    "deviceName": UIDevice.current.name,
+//                    "attributes": [
+//                        "referenceId": "ref\(index)",
+//                        "type": "Visits__c"
+//                    ]
+                    "Checked_Out__c": otherActivityModelData.checkedOut ?? EMPTY,
+                    "Checked_In__c": otherActivityModelData.checkedIn ?? EMPTY,
                     "ownerId": Defaults.userId ?? EMPTY,
-                    "actualStart": otherActivityModelData.actualStart ?? EMPTY,
-                    "actualEnd": otherActivityModelData.actualEnd ?? EMPTY,
-                    "checkedInLat": otherActivityModelData.checkedInLat ?? EMPTY,
-                    "checkedInLong": otherActivityModelData.checkedInLong ?? EMPTY,
-                    "checkedOutLat": otherActivityModelData.checkedOutLat ?? EMPTY,
-                    "checkedOutLong": otherActivityModelData.checkedOutLong ?? EMPTY,
-                    "outletCreation": "Other Activity",
+                    "Actual_Start__c": otherActivityModelData.actualStart ?? EMPTY,
+                    "Actual_End__c": otherActivityModelData.actualEnd ?? EMPTY,
+                    "Checked_In_Location__Latitude__s": otherActivityModelData.checkedInLat ?? EMPTY,
+                    "Checked_In_Location__Longitude__s": otherActivityModelData.checkedInLong ?? EMPTY,
+                    "Checked_Out_Geolocation__Latitude__s": otherActivityModelData.checkedOutLat ?? EMPTY,
+                    "Checked_Out_Geolocation__Longitude__s": otherActivityModelData.checkedOutLong ?? EMPTY,
+                    "Outlet_Creation__c": "Other Activity",
                     "name": otherActivityModelData.name ?? EMPTY,
-                    "remark": otherActivityModelData.remark ?? EMPTY,
+                    "Remark_s__c": otherActivityModelData.remark ?? EMPTY,
                     "Device_Version__c": self.appVersionOperation.getCurrentAppVersion() ?? "",
-                    "deviceType": "iOS",
-                    "deviceName": UIDevice.current.name,
+                    "Device_Type__c": "iOS",
+                    "Device_Name__c": UIDevice.current.name,
                     "attributes": [
-                        "referenceId": "ref\(index)",
-                        "type": "Visits__c"
+                      "referenceId": "ref\(index)",
+                      "type": "Visits__c"
                     ]
                 ]
                 recordsArray.append(otherActivityModelDataPayload)
