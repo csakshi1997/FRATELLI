@@ -18,6 +18,7 @@ class LocationSyncManager {
     let monitor = NWPathMonitor()
     let queue = DispatchQueue.global(qos: .background)
     static let shared = LocationSyncManager()
+    var appVersionOperation = AppVersionOperation()
     var isAPIRunning: Bool = false
     
     func syncOfflineLocationsToServer() {
@@ -59,10 +60,12 @@ class LocationSyncManager {
             "BatteryPercentage": location.batteryPercentage ?? 20,
             "Address": location.address ?? "Unknown Address",
             "DeviceModel": location.deviceModel ?? "Unknown Device",
+            "AppVersion": appVersionOperation.getCurrentAppVersion() ?? "",
             "MobileDistanceKm": String(format: "%.2f", location.diffrenceBetweenCurrentAndLastLatLong ?? 0.0)
         ]
         
         let payload: [String: Any] = ["records": [locationPayload]]
+        print("payload of location: \(payload)")
         webRequest.processRequestUsingPostMethod(url: "https://location.fieldblaze.com/user/tracking/create", parameters: payload, showLoader: false, contentType: .json) { error, val, result, statusCode in
             if let error = error {
                 completion(false)
@@ -81,7 +84,8 @@ class LocationSyncManager {
             }
         }
         saveLastLocation(location)
-        let batteryLevel = max(20, Int(UIDevice.current.batteryLevel * 100))
+
+        let batteryPercentage = getBatteryPercentage()
         let deviceModel = UIDevice.current.model
         let deviceManufacturer = "Apple"
         
@@ -104,9 +108,9 @@ class LocationSyncManager {
                 longitude: location.coordinate.longitude,
                 diffrenceBetweenCurrentAndLastLatLong: distance,
                 address: address,
-                isMockLocation: isMockLocation,
+                isMockLocation: 0,
                 dateTime: CustomDateFormatter.getCurrentDateTime(),
-                batteryPercentage: batteryLevel,
+                batteryPercentage: batteryPercentage,
                 deviceModel: deviceModel,
                 deviceManufacturer: deviceManufacturer
             )
@@ -131,5 +135,16 @@ class LocationSyncManager {
             return CLLocation(latitude: lat, longitude: lon)
         }
         return nil
+    }
+    
+    func getBatteryPercentage() -> Int {
+        let level = UIDevice.current.batteryLevel
+        
+        if level < 0.0 {
+            print("⚠️ Battery info unavailable.")
+            return 0
+        }
+        
+        return Int(level * 100)
     }
 }

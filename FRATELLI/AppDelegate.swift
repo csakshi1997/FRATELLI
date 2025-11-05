@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             guard let task = task as? BGAppRefreshTask else { return }
             self.handleBackgroundTask(task: task)
         }
+        UIDevice.current.isBatteryMonitoringEnabled = true
         IQKeyboardManager.shared.isEnabled = true
         Database.createDatabase()
         monitor.pathUpdateHandler = { path in
