@@ -74,10 +74,8 @@ class SyncDownOperations {
                     print("📦 Payload that caused error: \(payload)")
                     
                     
-                    // Get current timestamp
                     let issueDateTime = self.dateFormatter.string(from: Date())
                     
-                    // Log the error
                     self.reportSyncError(
                         objectName: "Account",
                         errorMessage: error,

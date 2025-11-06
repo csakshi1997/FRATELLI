@@ -88,6 +88,7 @@ class LocationSyncManager {
         let batteryPercentage = getBatteryPercentage()
         let deviceModel = UIDevice.current.model
         let deviceManufacturer = "Apple"
+        let isOffline = !InternetConnectionManager.isConnectedToNetwork()
         
         let geocoder = CLGeocoder()
         geocoder.reverseGeocodeLocation(location) { placemarks, error in
@@ -103,7 +104,7 @@ class LocationSyncManager {
             
             let locationModel = LocationModel(
                 id: nil,
-                isOfflineRecord: true,
+                isOfflineRecord: isOffline,
                 latitude: location.coordinate.latitude,
                 longitude: location.coordinate.longitude,
                 diffrenceBetweenCurrentAndLastLatLong: distance,
