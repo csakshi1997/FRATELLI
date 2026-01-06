@@ -1089,7 +1089,8 @@ class SyncDownOperations {
             let localId = Int(item.localId ?? 0)
             let fileName = item.fileName ?? ""
             let fileURL = getDocumentsDirectory().appendingPathComponent(fileName)
-
+            print(fileName)
+            print(fileURL)
             guard FileManager.default.fileExists(atPath: fileURL.path) else {
                 print("❌ File not found for LocalId \(localId): \(fileName)")
                 syncNext(index: index + 1)  // Continue to next
@@ -1109,7 +1110,7 @@ class SyncDownOperations {
                 } else {
                     mimeType = "application/octet-stream"
                 }
-
+                print(mimeType)
                 UploadFileToServer().uploadFileToServer(
                     userId: item.userId ?? EMPTY,
                     fileData: fileData,
@@ -1174,27 +1175,62 @@ class SyncDownOperations {
     }
     
     func sendToSalesforce(payload: [String: Any], completion: @escaping (Bool) -> Void) {
-        print("payloaddddddd \(payload)")
-        print("urlllllll \(apiUrl)\(endPoint.SALESFORCE_IMAGE_UPLOAD)")
+        
+        print("📤 Payload to Salesforce:\n\(payload)")
+        print("🌍 URL:\(apiUrl)\(endPoint.SALESFORCE_IMAGE_UPLOAD)")
+        
         webRequest.processRequestUsingPostMethod(
             url: "\(apiUrl)\(endPoint.SALESFORCE_IMAGE_UPLOAD)",
             parameters: payload,
             showLoader: true,
             contentType: .json
         ) { error, val, result, statusCode in
-
+            
+            if let error = error {
+                print("❌ Salesforce API error:", error)
+                completion(false)
+                return
+            }
+            
             guard let responseData = result as? [String: Any] else {
                 print("❌ Invalid Salesforce response")
                 completion(false)
                 return
             }
-
-            if let records = responseData["records"] as? [[String: Any]] {
-                print("✅ Salesforce responded with \(records.count) records")
-                completion(true)
-            } else {
-                print("⚠️ No 'records' key found in Salesforce response")
-                completion(false)
+            
+            print("📦 Raw Salesforce response:\n\(responseData)")
+            if let hasErrorsAny = responseData["hasErrors"] {
+                let hasErrors: Bool
+                if let boolValue = hasErrorsAny as? Bool {
+                    hasErrors = boolValue
+                } else if let intValue = hasErrorsAny as? Int {
+                    hasErrors = intValue != 0
+                } else {
+                    hasErrors = true // default to fail if unknown type
+                }
+                
+                if let results = responseData["results"] as? [[String: Any]] {
+                    if !hasErrors {
+                        print("✅ Salesforce sync SUCCESS")
+                        for result in results {
+                            if let id = result["id"] as? String {
+                                print("📌 Salesforce record ID: \(id)")
+                            }
+                        }
+                        completion(true)
+                    } else {
+                        print("❌ Salesforce reported errors")
+                        for result in results {
+                            if let errors = result["errors"] as? [[String: Any]] {
+                                for error in errors {
+                                    print("Salesforce error message:", error["message"] ?? "Unknown error")
+                                }
+                            }
+                        }
+                        completion(false)
+                    }
+                    return
+                }
             }
         }
     }
@@ -1252,10 +1288,11 @@ class SyncDownOperations {
                         }
 
                         self.assetRequisitionServerTable.updatePublicURL(forLocalId: localId, url: publicUrl)
-
+                        print(publicUrl)
                         var updatedItem = item
                         updatedItem.imagePublicUrl = publicUrl
                         let payload = self.buildSalesforceImagePayloadForAsset(from: updatedItem)
+                        print(payload)
 
                         self.sendAssetToSalesforce(payload: payload) { sfSuccess in
                             if sfSuccess {
@@ -1315,11 +1352,15 @@ class SyncDownOperations {
                 return
             }
 
+            // Try to get 'records' or fallback to 'results'
             if let records = responseData["records"] as? [[String: Any]] {
                 print("✅ Salesforce responded with \(records.count) records")
                 completion(true)
+            } else if let results = responseData["results"] as? [[String: Any]] {
+                print("✅ Salesforce responded with \(results.count) results")
+                completion(true)
             } else {
-                print("⚠️ No 'records' key found in Salesforce response")
+                print("⚠️ No 'records' or 'results' key found in Salesforce response")
                 completion(false)
             }
         }
