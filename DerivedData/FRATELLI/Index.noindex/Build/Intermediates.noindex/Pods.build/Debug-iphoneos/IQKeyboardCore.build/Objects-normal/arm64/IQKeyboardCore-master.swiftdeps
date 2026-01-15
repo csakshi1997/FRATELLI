@@ -1,0 +1,9 @@
+version: "Apple Swift version 6.0.3 (swiftlang-6.0.3.1.10 clang-1600.0.30.1)"
+options: "58b489c3d683f2f5a92c1d5976ce04c7a4ac65c9ef8c70b0ae5afc2f56263dba"
+build_start_time: [1768482905, 544953000]
+build_end_time: [1768482909, 313132000]
+inputs:
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardCore/IQKeyboardCore/Classes/Constants/IQKeyboardConstants.swift": [1767886377, 89410053]
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardCore/IQKeyboardCore/Classes/IQKeyboardExtended.swift": [1767886377, 89571591]
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardCore/IQKeyboardCore/Classes/IQTextInputView.swift": [1767886377, 89764420]
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardCore/IQKeyboardCore/Classes/UIKitExtensions/UIView+Hierarchy.swift": [1767886377, 90078830]

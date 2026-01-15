@@ -7,16 +7,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "453EDF4C-B20C-4524-9D3D-FE44C769E155"
+            uuid = "945D04FC-FE2A-4B20-8C8E-360024075D09"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FRATELLI/Services/WebServices/SyncDownOperations.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1526"
-            endingLineNumber = "1526"
-            landmarkName = "sendObjects()"
+            startingLineNumber = "1153"
+            endingLineNumber = "1153"
+            landmarkName = "buildSalesforceImagePayload(from:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "228B6E2A-3A8C-4B5F-A1DD-FEC16904F940"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FRATELLI/Services/WebServices/SyncDownOperations.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1323"
+            endingLineNumber = "1323"
+            landmarkName = "buildSalesforceImagePayloadForAsset(from:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

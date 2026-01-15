@@ -1,0 +1,99 @@
+{
+  "buildCommand" : {
+    "command" : "prepareForIndexing",
+    "enableIndexBuildArena" : true,
+    "targets" : null
+  },
+  "configuredTargets" : [
+    {
+      "guid" : "bafefbc00d0656a9ff9759415981cdaac2ac351670d11a2891211d4d24842005"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42255250d8d9c3d6eeec650de6c5d58c64"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42da869d895b4285994d54f5e938c590d0"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42ff03b57f039c4eeaa4bee3e77b2b2e4d"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd425bd691a1559ce634921f6087593b5aa7"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42c46180aea4e87057640961e6db37df0d"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd425818c26b21270f83cec5244b861428e1"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42631b70fce688f434a0f39db8576618f7"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd4256a45ed93c3998eacee4f43d5c928054"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42ef949c11201f22027132dc0d42f6635e"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42cfd1d6394655aeacac5a016961d542f7"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42fd74661a948fd362490cc742e87ff172"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42bc6be84e3eb8d8d525558461e37a34b6"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd4200d5f1038a74fd722767d668286662d6"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42ec1e5d51cce0dda6dc3122e5391d9b39"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd42ba3679b4c4428e6a6d83c5308d3af99b"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd422b0e9fdb3508bc1e1315696a97ef98c2"
+    },
+    {
+      "guid" : "8699adb1dd336b26511df848a716bd426a9bfa23e8ac69f12832c3da30f2a6c9"
+    }
+  ],
+  "containerPath" : "/Users/sakshi/Documents/Projects/FRATELLI/FRATELLI.xcworkspace",
+  "continueBuildingAfterErrors" : true,
+  "dependencyScope" : "workspace",
+  "enableIndexBuildArena" : false,
+  "hideShellScriptEnvironment" : false,
+  "parameters" : {
+    "action" : "indexbuild",
+    "arenaInfo" : {
+      "buildIntermediatesPath" : "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/Build/Intermediates.noindex",
+      "buildProductsPath" : "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/Build/Products",
+      "derivedDataPath" : "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData",
+      "indexDataStoreFolderPath" : "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/DataStore",
+      "indexEnableDataStore" : true,
+      "indexPCHPath" : "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/PrecompiledHeaders",
+      "indexRegularBuildIntermediatesPath" : "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Build/Intermediates.noindex",
+      "indexRegularBuildProductsPath" : "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Build/Products",
+      "pchPath" : "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/Build/Intermediates.noindex/PrecompiledHeaders"
+    },
+    "configurationName" : "Debug",
+    "overrides" : {
+      "synthesized" : {
+        "table" : {
+          "ENABLE_PREVIEWS" : "NO",
+          "ENABLE_XOJIT_PREVIEWS" : "NO",
+          "ONLY_ACTIVE_ARCH" : "YES"
+        }
+      }
+    }
+  },
+  "qos" : "utility",
+  "schemeCommand" : "launch",
+  "showNonLoggedProgress" : true,
+  "useDryRun" : false,
+  "useImplicitDependencies" : true,
+  "useLegacyBuildLocations" : false,
+  "useParallelTargets" : true
+}

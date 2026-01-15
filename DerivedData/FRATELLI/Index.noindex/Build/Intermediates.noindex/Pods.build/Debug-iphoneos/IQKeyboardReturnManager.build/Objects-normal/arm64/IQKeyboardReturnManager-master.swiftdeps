@@ -1,0 +1,13 @@
+version: "Apple Swift version 6.0.3 (swiftlang-6.0.3.1.10 clang-1600.0.30.1)"
+options: "f655b11196ec38935195f1cd98eab5a5b68ad99381fa7e62452c776e82bf280e"
+build_start_time: [1768482908, 303728000]
+build_end_time: [1768482909, 311068000]
+inputs:
+  ? "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardReturnManager/IQKeyboardReturnManager/Classes/Delegates/IQKeyboardReturnManager+UITextFieldDelegate.swift"
+  : [1767886380, 871600617]
+  ? "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardReturnManager/IQKeyboardReturnManager/Classes/Delegates/IQKeyboardReturnManager+UITextViewDelegate.swift"
+  : [1767886380, 871332665]
+  ? "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardReturnManager/IQKeyboardReturnManager/Classes/IQKeyboardReturnManager.swift"
+  : [1767886380, 871861029]
+  ? "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardReturnManager/IQKeyboardReturnManager/Classes/IQTextInputViewInfoModel.swift"
+  : [1767886380, 870878050]

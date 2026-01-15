@@ -1,0 +1,21 @@
+version: "Apple Swift version 6.0.3 (swiftlang-6.0.3.1.10 clang-1600.0.30.1)"
+options: "4bff3900629fb007241403d643c6279254165814fd2896e8f09d19925bf4e1e3"
+build_start_time: [1768482908, 303598000]
+build_end_time: [1768482909, 311640000]
+inputs:
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQBarButtonItem/IQBarButtonItem.swift": [1767886382, 27904402]
+  ? "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQBarButtonItem/IQBarButtonItemConfiguration.swift"
+  : [1767886382, 28351184]
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQBarButtonItem/IQInvocation.swift": [1767886382, 28124147]
+  ? "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQBarButtonItem/IQTitleBarButtonItem.swift"
+  : [1767886382, 27658740]
+  ? "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQKeyboardExtension/UIView+IQKeyboardExtension.swift"
+  : [1767886382, 27001504]
+  ? "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQKeyboardExtension/UIView+IQKeyboardExtensionDeprecated.swift"
+  : [1767886382, 26734135]
+  ? "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQKeyboardExtension/UIView+IQKeyboardExtensionObjc.swift"
+  : [1767886382, 27271874]
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQKeyboardToolbar.swift": [1767886382, 28567304]
+  ? "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/Placeholder/IQKeyboardToolbarPlaceholderConfiguration.swift"
+  : [1767886382, 28882381]
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Placeholderable/IQPlaceholderable.swift": [1767886382, 29189208]

@@ -1,0 +1,51 @@
+{
+  "" : {
+    "dependencies" : "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-maccatalyst/SideMenu.build/Objects-normal/arm64/SideMenu-master.d",
+    "diagnostics" : "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-maccatalyst/SideMenu.build/Objects-normal/arm64/SideMenu-master.dia",
+    "emit-module-dependencies" : "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-maccatalyst/SideMenu.build/Objects-normal/arm64/SideMenu-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-maccatalyst/SideMenu.build/Objects-normal/arm64/SideMenu-master-emit-module.dia",
+    "swift-dependencies" : "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-maccatalyst/SideMenu.build/Objects-normal/arm64/SideMenu-master.swiftdeps"
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/Deprecations.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/Extensions.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/Initializable.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/Print.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/Protected.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/SideMenuAnimationController.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/SideMenuInteractionController.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/SideMenuManager.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/SideMenuNavigationController.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/SideMenuPresentationController.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/SideMenuPresentationStyle.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/SideMenuPushCoordinator.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/SideMenuTransitionController.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/UITableViewVibrantCell.swift" : {
+
+  }
+}

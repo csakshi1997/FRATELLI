@@ -1,0 +1,23 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "B0F91C618F97D9EBC0BF2BE3EC23AFF9AF57890C",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "B0F91C618F97D9EBC0BF2BE3EC23AFF9AF57890C" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "7F571321-6CD5-4319-82C4-0A4A7DF7DF44",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "B0F91C618F97D9EBC0BF2BE3EC23AFF9AF57890C" : "FRATELLI\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "FRATELLI",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "FRATELLI.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/csakshi1997\/FRATELLI.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "B0F91C618F97D9EBC0BF2BE3EC23AFF9AF57890C"
+    }
+  ]
+}

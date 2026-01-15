@@ -1093,7 +1093,7 @@ class SyncDownOperations {
             print(fileURL)
             guard FileManager.default.fileExists(atPath: fileURL.path) else {
                 print("❌ File not found for LocalId \(localId): \(fileName)")
-                syncNext(index: index + 1)  // Continue to next
+                syncNext(index: index + 1)
                 return
             }
 
@@ -1112,7 +1112,7 @@ class SyncDownOperations {
                 }
                 print(mimeType)
                 UploadFileToServer().uploadFileToServer(
-                    userId: item.userId ?? EMPTY,
+                    userId: item.dealerDistributorCorpId ?? EMPTY,
                     fileData: fileData,
                     fileName: fileName,
                     mimeType: mimeType
@@ -1137,18 +1137,16 @@ class SyncDownOperations {
                             } else {
                                 print("❌ Salesforce sync failed for LocalId: \(localId)")
                             }
-                            syncNext(index: index + 1)  // Proceed to next
+                            syncNext(index: index + 1)
                         }
                     }
                 }
-
             } catch {
                 print("❌ File read error for LocalId \(localId): \(error.localizedDescription)")
                 syncNext(index: index + 1)
             }
         }
-
-        syncNext(index: 0)  // Start the sync chain
+        syncNext(index: 0)
     }
 
     func buildSalesforceImagePayload(from model: VisibilityServerModel) -> [String: Any] {
@@ -1171,11 +1169,9 @@ class SyncDownOperations {
         ]
         print("VisibilityServerModel VisibilityServerModel \(record)")
         return ["records": [record]]
-       
     }
     
     func sendToSalesforce(payload: [String: Any], completion: @escaping (Bool) -> Void) {
-        
         print("📤 Payload to Salesforce:\n\(payload)")
         print("🌍 URL:\(apiUrl)\(endPoint.SALESFORCE_IMAGE_UPLOAD)")
         
@@ -1206,7 +1202,7 @@ class SyncDownOperations {
                 } else if let intValue = hasErrorsAny as? Int {
                     hasErrors = intValue != 0
                 } else {
-                    hasErrors = true // default to fail if unknown type
+                    hasErrors = true
                 }
                 
                 if let results = responseData["results"] as? [[String: Any]] {
@@ -1256,7 +1252,7 @@ class SyncDownOperations {
 
             guard FileManager.default.fileExists(atPath: fileURL.path) else {
                 print("❌ File not found for LocalId \(localId): \(fileName)")
-                syncNext(index: index + 1)  // Continue to next
+                syncNext(index: index + 1)
                 return
             }
 
@@ -1275,7 +1271,7 @@ class SyncDownOperations {
                 }
 
                 UploadFileToServer().uploadFileToServer(
-                    userId: item.userId ?? EMPTY,
+                    userId: item.dealerDistributorCorpId ?? EMPTY,
                     fileData: fileData,
                     fileName: fileName,
                     mimeType: mimeType
@@ -1301,7 +1297,7 @@ class SyncDownOperations {
                             } else {
                                 print("❌ Salesforce sync failed for LocalId: \(localId)")
                             }
-                            syncNext(index: index + 1)  // Proceed to next
+                            syncNext(index: index + 1)
                         }
                     }
                 }
@@ -1352,7 +1348,6 @@ class SyncDownOperations {
                 return
             }
 
-            // Try to get 'records' or fallback to 'results'
             if let records = responseData["records"] as? [[String: Any]] {
                 print("✅ Salesforce responded with \(records.count) records")
                 completion(true)

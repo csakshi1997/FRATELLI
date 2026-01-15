@@ -1,0 +1,23 @@
+{
+  'version': 0,
+  'use-external-names': 'false',
+  'case-sensitive': 'false',
+  'roots': [{
+    'type': 'directory',
+    'name': "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/Build/Products/Debug-iphonesimulator/SideMenu/SideMenu.framework/Modules"
+    'contents': [{
+      'type': 'file',
+      'name': "module.modulemap",
+      'external-contents': "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-iphonesimulator/SideMenu.build/unextended-module.modulemap",
+    }]
+    },
+    {
+    'type': 'directory',
+    'name': "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/Build/Products/Debug-iphonesimulator/SideMenu/SideMenu.framework/Headers"
+    'contents': [{
+      'type': 'file',
+      'name': "SideMenu-Swift.h",
+      'external-contents': "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-iphonesimulator/SideMenu.build/unextended-interface-header.h",
+    }]
+    }]
+}

@@ -158,11 +158,11 @@
 		53E30DD72E028BEC00A2A109 /* OtherActivityVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E30DD62E028BEC00A2A109 /* OtherActivityVC.swift */; };
 		53E30DD92E02A0B100A2A109 /* OtherActivityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E30DD82E02A0B100A2A109 /* OtherActivityModel.swift */; };
 		53E30DDB2E02A19600A2A109 /* OtherActivityTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53E30DDA2E02A19600A2A109 /* OtherActivityTable.swift */; };
-		71CE51B140A6533DE0A6714D /* Pods_FRATELLI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCFCD06B36BB036EB4DAFE4B /* Pods_FRATELLI.framework */; };
+		7F120CEB25E9DC175C78FFBB /* Pods_FRATELLI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84D59BBE1947D77709016D14 /* Pods_FRATELLI.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		093CABB7337C77216896B014 /* Pods-FRATELLI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FRATELLI.release.xcconfig"; path = "Target Support Files/Pods-FRATELLI/Pods-FRATELLI.release.xcconfig"; sourceTree = "<group>"; };
+		2B6DE773CCD5EC0421346A3C /* Pods-FRATELLI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FRATELLI.debug.xcconfig"; path = "Target Support Files/Pods-FRATELLI/Pods-FRATELLI.debug.xcconfig"; sourceTree = "<group>"; };
 		530940602D2E94AF00EC4790 /* POSMRequisitionTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POSMRequisitionTable.swift; sourceTree = "<group>"; };
 		530940622D2E94BC00EC4790 /* POSMRequisitionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POSMRequisitionModel.swift; sourceTree = "<group>"; };
 		531112B02E0D59C800B97E62 /* AssetRequisitionServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetRequisitionServerModel.swift; sourceTree = "<group>"; };
@@ -317,8 +317,8 @@
 		53E30DD62E028BEC00A2A109 /* OtherActivityVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherActivityVC.swift; sourceTree = "<group>"; };
 		53E30DD82E02A0B100A2A109 /* OtherActivityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherActivityModel.swift; sourceTree = "<group>"; };
 		53E30DDA2E02A19600A2A109 /* OtherActivityTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherActivityTable.swift; sourceTree = "<group>"; };
-		DB5C11BEF32CBBEC18F699CF /* Pods-FRATELLI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FRATELLI.debug.xcconfig"; path = "Target Support Files/Pods-FRATELLI/Pods-FRATELLI.debug.xcconfig"; sourceTree = "<group>"; };
-		DCFCD06B36BB036EB4DAFE4B /* Pods_FRATELLI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FRATELLI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		84D59BBE1947D77709016D14 /* Pods_FRATELLI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FRATELLI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		98298D8F29103E0E6961CB7C /* Pods-FRATELLI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FRATELLI.release.xcconfig"; path = "Target Support Files/Pods-FRATELLI/Pods-FRATELLI.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -334,7 +334,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71CE51B140A6533DE0A6714D /* Pods_FRATELLI.framework in Frameworks */,
+				7F120CEB25E9DC175C78FFBB /* Pods_FRATELLI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,8 +344,8 @@
 		03237C90ECD3646D640FFD65 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				DB5C11BEF32CBBEC18F699CF /* Pods-FRATELLI.debug.xcconfig */,
-				093CABB7337C77216896B014 /* Pods-FRATELLI.release.xcconfig */,
+				2B6DE773CCD5EC0421346A3C /* Pods-FRATELLI.debug.xcconfig */,
+				98298D8F29103E0E6961CB7C /* Pods-FRATELLI.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -613,7 +613,7 @@
 				53CD3BFE2CC272B1007E923D /* FRATELLI */,
 				53CD3BD92CC24B99007E923D /* Products */,
 				03237C90ECD3646D640FFD65 /* Pods */,
-				BB1428FF89B9304B6C7BC25C /* Frameworks */,
+				F3CC714D725A5E95E456CA34 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -697,10 +697,10 @@
 			path = TableViewCell;
 			sourceTree = "<group>";
 		};
-		BB1428FF89B9304B6C7BC25C /* Frameworks */ = {
+		F3CC714D725A5E95E456CA34 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				DCFCD06B36BB036EB4DAFE4B /* Pods_FRATELLI.framework */,
+				84D59BBE1947D77709016D14 /* Pods_FRATELLI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -712,11 +712,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 53CD3BEB2CC24B9A007E923D /* Build configuration list for PBXNativeTarget "FRATELLI" */;
 			buildPhases = (
-				D5EFC8D6880F8BCC57A3F04C /* [CP] Check Pods Manifest.lock */,
+				24CEE76BF7CD0A580F7E503B /* [CP] Check Pods Manifest.lock */,
 				53CD3BD42CC24B99007E923D /* Sources */,
 				53CD3BD52CC24B99007E923D /* Frameworks */,
 				53CD3BD62CC24B99007E923D /* Resources */,
-				20099D783EF9498404B09E0D /* [CP] Embed Pods Frameworks */,
+				B47718BFAB1490B5C1C34A36 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -795,24 +795,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		20099D783EF9498404B09E0D /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FRATELLI/Pods-FRATELLI-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FRATELLI/Pods-FRATELLI-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FRATELLI/Pods-FRATELLI-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D5EFC8D6880F8BCC57A3F04C /* [CP] Check Pods Manifest.lock */ = {
+		24CEE76BF7CD0A580F7E503B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -832,6 +815,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B47718BFAB1490B5C1C34A36 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FRATELLI/Pods-FRATELLI-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FRATELLI/Pods-FRATELLI-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FRATELLI/Pods-FRATELLI-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -998,7 +998,7 @@
 /* Begin XCBuildConfiguration section */
 		53CD3BEC2CC24B9A007E923D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DB5C11BEF32CBBEC18F699CF /* Pods-FRATELLI.debug.xcconfig */;
+			baseConfigurationReference = 2B6DE773CCD5EC0421346A3C /* Pods-FRATELLI.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1022,7 +1022,7 @@
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1042,7 +1042,7 @@
 		};
 		53CD3BED2CC24B9A007E923D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 093CABB7337C77216896B014 /* Pods-FRATELLI.release.xcconfig */;
+			baseConfigurationReference = 98298D8F29103E0E6961CB7C /* Pods-FRATELLI.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1066,7 +1066,7 @@
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

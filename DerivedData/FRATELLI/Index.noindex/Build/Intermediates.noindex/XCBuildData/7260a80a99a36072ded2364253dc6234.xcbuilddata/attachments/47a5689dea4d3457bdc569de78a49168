@@ -1,0 +1,39 @@
+{
+  "" : {
+    "dependencies" : "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-maccatalyst/IQKeyboardToolbar.build/Objects-normal/arm64/IQKeyboardToolbar-master.d",
+    "diagnostics" : "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-maccatalyst/IQKeyboardToolbar.build/Objects-normal/arm64/IQKeyboardToolbar-master.dia",
+    "emit-module-dependencies" : "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-maccatalyst/IQKeyboardToolbar.build/Objects-normal/arm64/IQKeyboardToolbar-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-maccatalyst/IQKeyboardToolbar.build/Objects-normal/arm64/IQKeyboardToolbar-master-emit-module.dia",
+    "swift-dependencies" : "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-maccatalyst/IQKeyboardToolbar.build/Objects-normal/arm64/IQKeyboardToolbar-master.swiftdeps"
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQBarButtonItem/IQBarButtonItem.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQBarButtonItem/IQBarButtonItemConfiguration.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQBarButtonItem/IQInvocation.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQBarButtonItem/IQTitleBarButtonItem.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQKeyboardExtension/UIView+IQKeyboardExtension.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQKeyboardExtension/UIView+IQKeyboardExtensionDeprecated.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQKeyboardExtension/UIView+IQKeyboardExtensionObjc.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQKeyboardToolbar.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/Placeholder/IQKeyboardToolbarPlaceholderConfiguration.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Placeholderable/IQPlaceholderable.swift" : {
+
+  }
+}

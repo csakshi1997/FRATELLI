@@ -1,0 +1,102 @@
+{
+  "" : {
+    "dependencies" : "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-iphonesimulator/IQKeyboardManagerSwift.build/Objects-normal/arm64/IQKeyboardManagerSwift-master.d",
+    "diagnostics" : "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-iphonesimulator/IQKeyboardManagerSwift.build/Objects-normal/arm64/IQKeyboardManagerSwift-master.dia",
+    "emit-module-dependencies" : "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-iphonesimulator/IQKeyboardManagerSwift.build/Objects-normal/arm64/IQKeyboardManagerSwift-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-iphonesimulator/IQKeyboardManagerSwift.build/Objects-normal/arm64/IQKeyboardManagerSwift-master-emit-module.dia",
+    "swift-dependencies" : "/Users/sakshi/Documents/Projects/FRATELLI/DerivedData/FRATELLI/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-iphonesimulator/IQKeyboardManagerSwift.build/Objects-normal/arm64/IQKeyboardManagerSwift-master.swiftdeps"
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/Appearance/IQKeyboardAppearanceConfiguration.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/Appearance/IQKeyboardAppearanceManager.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/Appearance/IQKeyboardAppearanceManager+Internal.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/Appearance/IQKeyboardManager+Appearance_Deprecated.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/Appearance/IQKeyboardManager+Appearance.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/IQKeyboardManager/Configuration/IQActiveConfiguration.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/IQKeyboardManager/Configuration/IQRootControllerConfiguration.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/IQKeyboardManager/Configuration/IQScrollViewConfiguration.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/IQKeyboardManager/Debug/IQKeyboardManager+Debug.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/IQKeyboardManager/Deprecated/IQKeyboardManager+Deprecated.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/IQKeyboardManager/IQKeyboardManager.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/IQKeyboardManager/IQKeyboardManager+ActiveConfiguration.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/IQKeyboardManager/IQKeyboardManager+Internal.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/IQKeyboardManager/IQKeyboardManager+Position.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/IQKeyboardManager/IQKeyboardManagerExtension/UIScrollView+IQKeyboardManagerExtension.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/IQKeyboardManager/IQKeyboardManagerExtension/UIScrollView+IQKeyboardManagerExtensionObjc.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/IQKeyboardManager/IQKeyboardManagerExtension/UIView+IQKeyboardManagerExtension.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/IQKeyboardManager/IQKeyboardManagerExtension/UIView+IQKeyboardManagerExtensionObjc.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/IQKeyboardManager/UIKitExtensions/UICollectionView+IndexPaths.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/IQKeyboardManager/UIKitExtensions/UITableView+IndexPaths.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/IQKeyboardManager/UIKitExtensions/UIView+Parent.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/IQKeyboardManager/UIKitExtensions/UIView+ParentObjc.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/IQKeyboardManager/UIKitExtensions/UIViewController+ParentContainer.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/IQKeyboardToolbarManager/IQKeyboardManager+ToolbarManager.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/IQKeyboardToolbarManager/IQKeyboardManager+ToolbarManagerDeprecated.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/Resign/IQKeyboardManager+Resign_Deprecated.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/Resign/IQKeyboardManager+Resign.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/Resign/IQKeyboardResignHandler.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/Resign/IQKeyboardResignHandler+Internal.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/Resign/UIKItExtensions/UIView+Resign.swift" : {
+
+  },
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardManagerSwift/IQKeyboardManagerSwift/Resign/UIKItExtensions/UIView+ResignObjc.swift" : {
+
+  }
+}

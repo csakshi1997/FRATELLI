@@ -1,0 +1,19 @@
+version: "Apple Swift version 6.0.3 (swiftlang-6.0.3.1.10 clang-1600.0.30.1)"
+options: "24be97de169f18a13139ecaa04ec97f9d1e80c6a384021571b4d37dda759d40d"
+build_start_time: [1768482905, 545068000]
+build_end_time: [1768482909, 316282000]
+inputs:
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/Deprecations.swift": [1767886404, 185562927]
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/Extensions.swift": [1767886404, 186725611]
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/Initializable.swift": [1767886404, 184725112]
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/Print.swift": [1767886404, 184068417]
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/Protected.swift": [1767886404, 186004834]
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/SideMenuAnimationController.swift": [1767886404, 184361744]
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/SideMenuInteractionController.swift": [1767886404, 185073688]
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/SideMenuManager.swift": [1767886404, 186559864]
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/SideMenuNavigationController.swift": [1767886404, 187241517]
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/SideMenuPresentationController.swift": [1767886404, 186306536]
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/SideMenuPresentationStyle.swift": [1767886404, 185821047]
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/SideMenuPushCoordinator.swift": [1767886404, 186957814]
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/SideMenuTransitionController.swift": [1767886404, 187408263]
+  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/SideMenu/Pod/Classes/UITableViewVibrantCell.swift": [1767886404, 187574384]

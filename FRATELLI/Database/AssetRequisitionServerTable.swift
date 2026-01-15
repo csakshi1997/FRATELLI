@@ -111,7 +111,8 @@ class AssetRequisitionServerTable: Database {
                     fileType: fileType,
                     fileName: fileName,
                     isSync: isSync,
-                    createdAt: createdAt
+                    createdAt: createdAt,
+                    externalId: externalId
                 )
                 results.append(record)
             }
