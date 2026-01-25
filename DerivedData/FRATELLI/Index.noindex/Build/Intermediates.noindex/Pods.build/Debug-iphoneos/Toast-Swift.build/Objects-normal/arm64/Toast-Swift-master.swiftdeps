@@ -1,6 +1,0 @@
-version: "Apple Swift version 6.0.3 (swiftlang-6.0.3.1.10 clang-1600.0.30.1)"
-options: "f958205460bad4cfa410bb1137618282593bbd2093a766bb077aa0aa6854133a"
-build_start_time: [1768482905, 544970000]
-build_end_time: [1768482909, 314773000]
-inputs:
-  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/Toast-Swift/Toast/Toast.swift": [1767886405, 697506315]

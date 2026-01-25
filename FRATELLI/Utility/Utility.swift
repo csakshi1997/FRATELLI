@@ -165,6 +165,7 @@ class Utility {
     
     static func logoutWithoutDatabaseAffection(sessionTimeOutAtTheTimeOfSync: Bool) {
         if sessionTimeOutAtTheTimeOfSync {
+            Defaults.isTrackingStart = false
             Defaults.isAuthenticationfailedAtTheTimeOfSync = true
             self.gotoLoginView()
         }

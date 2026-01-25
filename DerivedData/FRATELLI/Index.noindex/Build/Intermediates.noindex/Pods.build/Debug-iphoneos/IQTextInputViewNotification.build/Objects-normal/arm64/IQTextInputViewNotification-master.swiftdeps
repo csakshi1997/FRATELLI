@@ -1,9 +1,0 @@
-version: "Apple Swift version 6.0.3 (swiftlang-6.0.3.1.10 clang-1600.0.30.1)"
-options: "b235fd895c1fbcb9667a153940870293a48ed4cff1bad839ef38b73ffe6f9109"
-build_start_time: [1768482908, 294269000]
-build_end_time: [1768482909, 315034000]
-inputs:
-  ? "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQTextInputViewNotification/IQTextInputViewNotification/Classes/IQTextInputViewInfo.swift"
-  : [1767886385, 240117171]
-  ? "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQTextInputViewNotification/IQTextInputViewNotification/Classes/IQTextInputViewNotification.swift"
-  : [1767886385, 239913634]

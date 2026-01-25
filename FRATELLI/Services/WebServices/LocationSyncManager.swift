@@ -43,35 +43,39 @@ class LocationSyncManager {
     }
     
     func sendLocationToServer(_ location: LocationModel, completion: @escaping (Bool) -> Void) {
-        guard let latitude = location.latitude, let longitude = location.longitude,
-              latitude != 0.0, longitude != 0.0 else {
-            completion(false)
-            return
-        }
-        
-        let locationPayload: [String: Any] = [
-            "DeviceManufacturer": location.deviceManufacturer ?? "Unknown Manufacturer",
-            "UserId": Defaults.userId ?? "",
-            "IsOfflineRecord": location.isOfflineRecord ?? false,
-            "DateTime": location.dateTime ?? CustomDateFormatter.getCurrentDateTime(),
-            "Longitude": longitude,
-            "Latitude": latitude,
-            "IsFakeLocation": location.isMockLocation ?? false,
-            "BatteryPercentage": location.batteryPercentage ?? 20,
-            "Address": location.address ?? "Unknown Address",
-            "DeviceModel": location.deviceModel ?? "Unknown Device",
-            "AppVersion": appVersionOperation.getCurrentAppVersion() ?? "",
-            "MobileDistanceKm": String(format: "%.2f", location.diffrenceBetweenCurrentAndLastLatLong ?? 0.0)
-        ]
-        
-        let payload: [String: Any] = ["records": [locationPayload]]
-        print("payload of location: \(payload)")
-        webRequest.processRequestUsingPostMethod(url: "https://location.fieldblaze.com/user/tracking/create", parameters: payload, showLoader: false, contentType: .json) { error, val, result, statusCode in
-            if let error = error {
+        if Defaults.userId?.isEmpty ?? false {
+            self.locationTable.deleteLocationById(id: location.id ?? 0 ) { _, _ in }
+        } else {
+            guard let latitude = location.latitude, let longitude = location.longitude,
+                  latitude != 0.0, longitude != 0.0 else {
                 completion(false)
                 return
             }
-            completion(true)
+            
+            let locationPayload: [String: Any] = [
+                "DeviceManufacturer": location.deviceManufacturer ?? "Unknown Manufacturer",
+                "UserId": Defaults.userId ?? "",
+                "IsOfflineRecord": location.isOfflineRecord ?? false,
+                "DateTime": location.dateTime ?? CustomDateFormatter.getCurrentDateTime(),
+                "Longitude": longitude,
+                "Latitude": latitude,
+                "IsFakeLocation": location.isMockLocation ?? false,
+                "BatteryPercentage": location.batteryPercentage ?? 20,
+                "Address": location.address ?? "Unknown Address",
+                "DeviceModel": location.deviceModel ?? "Unknown Device",
+                "AppVersion": appVersionOperation.getCurrentAppVersion() ?? "",
+                "MobileDistanceKm": String(format: "%.2f", location.diffrenceBetweenCurrentAndLastLatLong ?? 0.0)
+            ]
+            
+            let payload: [String: Any] = ["records": [locationPayload]]
+            print("payload of location: \(payload)")
+            webRequest.processRequestUsingPostMethod(url: "https://location.fieldblaze.com/user/tracking/create", parameters: payload, showLoader: false, contentType: .json) { error, val, result, statusCode in
+                if let error = error {
+                    completion(false)
+                    return
+                }
+                completion(true)
+            }
         }
     }
     

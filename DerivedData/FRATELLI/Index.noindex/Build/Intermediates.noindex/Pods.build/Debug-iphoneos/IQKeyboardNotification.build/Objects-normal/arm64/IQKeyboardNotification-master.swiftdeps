@@ -1,8 +1,0 @@
-version: "Apple Swift version 6.0.3 (swiftlang-6.0.3.1.10 clang-1600.0.30.1)"
-options: "d1440d51694017082ebbcb98a5b90b85e84507ff663670ddb28a187fae9232a8"
-build_start_time: [1768482905, 544963000]
-build_end_time: [1768482909, 317438000]
-inputs:
-  "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardNotification/IQKeyboardNotification/Classes/IQKeyboardInfo.swift": [1767886379, 716043817]
-  ? "/Users/sakshi/Documents/Projects/FRATELLI/Pods/IQKeyboardNotification/IQKeyboardNotification/Classes/IQKeyboardNotification.swift"
-  : [1767886379, 716302187]
