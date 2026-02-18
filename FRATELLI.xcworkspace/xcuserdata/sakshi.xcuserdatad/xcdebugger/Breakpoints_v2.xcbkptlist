@@ -34,6 +34,36 @@
             endingLineNumber = "1323"
             landmarkName = "buildSalesforceImagePayloadForAsset(from:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "228B6E2A-3A8C-4B5F-A1DD-FEC16904F940 - 792f8f28b100cb3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "function signature specialization &lt;Arg[1] = Dead&gt; of FRATELLI.SyncDownOperations.buildSalesforceImagePayloadForAsset(from: FRATELLI.AssetRequisitionServerModel) -&gt; Swift.Dictionary&lt;Swift.String, Any&gt;"
+                  moduleName = "FRATELLI"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sakshi/Documents/Projects/FRATELLI/FRATELLI/Services/WebServices/SyncDownOperations.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1323"
+                  endingLineNumber = "1323">
+               </Location>
+               <Location
+                  uuid = "228B6E2A-3A8C-4B5F-A1DD-FEC16904F940 - 792f8f28b100cb3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "function signature specialization &lt;Arg[1] = Dead&gt; of FRATELLI.SyncDownOperations.buildSalesforceImagePayloadForAsset(from: FRATELLI.AssetRequisitionServerModel) -&gt; Swift.Dictionary&lt;Swift.String, Any&gt;"
+                  moduleName = "FRATELLI"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sakshi/Documents/Projects/FRATELLI/FRATELLI/Services/WebServices/SyncDownOperations.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1323"
+                  endingLineNumber = "1323">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

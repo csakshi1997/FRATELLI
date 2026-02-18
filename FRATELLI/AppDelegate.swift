@@ -117,7 +117,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         var mockLocationValue = Int()
         guard let newLocation = locations.last else { return }
   
-        let isMockLocation = newLocation.horizontalAccuracy > 20
+        let isMockLocation = newLocation.horizontalAccuracy > 200
         if isMockLocation {
             mockLocationValue = 1
         } else {

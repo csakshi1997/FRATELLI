@@ -60,7 +60,7 @@ class CustomDateFormatter {
     
     static func getCurrentDateTime() -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss" // Adjust the format as needed
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss" 
         return dateFormatter.string(from: Date())
     }
     

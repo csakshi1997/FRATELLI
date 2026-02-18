@@ -56,7 +56,7 @@ class LocationSyncManager {
                 "DeviceManufacturer": location.deviceManufacturer ?? "Unknown Manufacturer",
                 "UserId": Defaults.userId ?? "",
                 "IsOfflineRecord": location.isOfflineRecord ?? false,
-                "DateTime": location.dateTime ?? CustomDateFormatter.getCurrentDateTime(),
+                "DateTime": location.dateTime ?? "",
                 "Longitude": longitude,
                 "Latitude": latitude,
                 "IsFakeLocation": location.isMockLocation ?? false,
