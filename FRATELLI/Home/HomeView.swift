@@ -78,7 +78,6 @@ class HomeView: UIViewController, CLLocationManagerDelegate, TodayVisitCellDeleg
             }
         }
         monitor.start(queue: monitorQueue)
-        compareAppVersions()
         appVersionOperation.getInternals { error, response, statusCode in
             
             if let error = error {
@@ -138,21 +137,27 @@ class HomeView: UIViewController, CLLocationManagerDelegate, TodayVisitCellDeleg
                 print("Comparison Result: \(comparison.rawValue)")
                 if comparison.rawValue < 0 {
                     DispatchQueue.main.async {
-                        let alertController = UIAlertController(title: "New Version Available",
-                                                                message: "A newer version of the app is available. Please update to continue using the latest features.",
-                                                                preferredStyle: .alert)
-                        
-                        let updateAction = UIAlertAction(title: "Update Now", style: .default) { _ in
-                            if let url = URL(string: "https://apps.apple.com/app/id\(applicationID)") {
-                                if UIApplication.shared.canOpenURL(url) {
+                        DispatchQueue.main.async {
+                            let alertController = UIAlertController(
+                                title: "New Version Available",
+                                message: "A new version is available on the Apple Store. Please update your app to continue enjoying the latest features.\n\nBefore updating, make sure your data is synced to avoid any data loss.",
+                                preferredStyle: .alert
+                            )
+
+                            let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+
+                            let updateAction = UIAlertAction(title: "Update", style: .default) { _ in
+                                if let url = URL(string: "https://apps.apple.com/app/id\(applicationID)") {
                                     UIApplication.shared.open(url)
                                 }
                             }
-                        }
-                        alertController.addAction(updateAction)
-                        DispatchQueue.main.async {
-                            if let topController = UIApplication.shared.keyWindow?.rootViewController {
-                                topController.present(alertController, animated: true)
+
+                            alertController.addAction(okAction)
+                            alertController.addAction(updateAction)
+
+                            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                               let rootVC = windowScene.windows.first?.rootViewController {
+                                rootVC.present(alertController, animated: true)
                             }
                         }
                     }
@@ -189,6 +194,7 @@ class HomeView: UIViewController, CLLocationManagerDelegate, TodayVisitCellDeleg
             startDayBtn?.setTitle("End Day", for: .normal)
         }
         progressBar()
+        compareAppVersions()
     }
     
     
